@@ -1,102 +1,124 @@
 /* =========================
    SITE FOOTER — Glassmorphism (matches VitalLink UI)
 ========================= */
-body {
+
+/* Push footer to very bottom even when content is short */
+html, body {
   min-height: 100vh;
+}
+
+body {
   display: flex;
   flex-direction: column;
 }
 
+/* Every direct child of body that is NOT the footer fills remaining space */
+body > *:not(.site-footer) {
+  flex-shrink: 0;
+}
+
+/* ── Footer shell ── */
 .site-footer {
-  width: 100%;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
   margin-top: auto;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 
+/* ── Single compact row ── */
 .site-footer__inner {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 0.6rem 2rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  box-sizing: border-box;
 }
 
-/* Social Icons */
+/* ── Social Icons ── */
 .site-footer__social {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  order: 2;
 }
 
 .site-footer__social a.social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   text-decoration: none;
-  backdrop-filter: blur(10px);
   transition:
-    color 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.site-footer__social a.social-icon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .site-footer__social a.social-icon:hover {
   color: #fff;
   background: rgba(220, 38, 38, 0.35);
   border-color: rgba(220, 38, 38, 0.5);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
-  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+  transform: translateY(-2px);
 }
 
 .site-footer__social a.social-icon:active {
-  transform: translateY(-1px);
+  transform: translateY(0);
 }
 
 .site-footer__social a.social-icon:focus-visible {
   outline: 2px solid #ff6b6b;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-/* Brand / copyright line */
+/* ── Brand / copyright ── */
 .site-footer__brand {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.5);
+  order: 1;
 }
 
-/* Legal links */
+/* ── Legal links ── */
 .site-footer__legal {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem 0.6rem;
-  font-size: 0.85rem;
+  gap: 0.3rem 0.5rem;
+  font-size: 0.72rem;
+  order: 3;
 }
 
 .site-footer__legal a {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.45);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -106,32 +128,24 @@ body {
 }
 
 .site-footer__sep {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.2);
   user-select: none;
 }
 
-/* Divider (hidden — border-top on .site-footer is enough) */
+/* Divider line not needed — border-top on footer is enough */
 .site-footer__divider {
   display: none;
 }
 
-@media (max-width: 480px) {
+/* ── Mobile ── */
+@media (max-width: 600px) {
   .site-footer__inner {
-    padding: 1.5rem 1.25rem;
-    gap: 0.85rem;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem 1rem;
   }
 
-  .site-footer__social a.social-icon {
-    width: 38px;
-    height: 38px;
-  }
-
-  .site-footer__social a.social-icon svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .site-footer__brand {
-    font-size: 0.72rem;
-  }
+  .site-footer__brand  { order: 1; width: 100%; text-align: center; }
+  .site-footer__social { order: 2; }
+  .site-footer__legal  { order: 3; }
 }

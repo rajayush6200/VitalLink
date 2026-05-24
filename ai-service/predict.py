@@ -6,17 +6,22 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(BASE_DIR, "blood_infection_model.keras")
+model_path = os.path.join(BASE_DIR, "blood_infection_model.tflite")
 
 # Load model ONCE (important for performance)
-model = tf.keras.models.load_model(model_path)
+interpreter = tf.lite.Interpreter(model_path=model_path)
+interpreter.allocate_tensors()
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 def predict_image(img_path):
     img = image.load_img(img_path, target_size=(224, 224))
     img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0
+    img_array = np.expand_dims(img_array, axis=0).astype(np.float32) / 255.0
 
-    prediction = model.predict(img_array, verbose=0)[0][0]
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+    interpreter.invoke()
+    prediction = interpreter.get_tensor(output_details[0]['index'])[0][0]
 
     if prediction < 0.5:
         result = "infection"

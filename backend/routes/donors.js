@@ -2,20 +2,25 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const { execFile } = require("child_process");
+const fs = require("fs");
 const Donor = require("../models/Donor");
+const { analyzeBloodImage } = require("../utils/aiClient");
+const { isDatabaseReady, databaseUnavailableResponse } = require("../utils/db");
 
-/* Multer setup */
+const uploadsDir = path.resolve(__dirname, "..", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
-  destination: path.resolve(__dirname, "..", "uploads"),
+  destination: uploadsDir,
   filename: (req, file, cb) => {
     cb(null, Date.now() + "_" + file.originalname);
-  }
+  },
 });
 
 const upload = multer({ storage });
 
-/* 1. GET only normal donors for the list */
 router.get("/normal", async (req, res) => {
   try {
     const donors = await Donor.find({ ai_result: "normal" });
@@ -25,93 +30,80 @@ router.get("/normal", async (req, res) => {
   }
 });
 
-/* 2. GET AI Statistics for Admin Dashboard Insights */
 router.get("/ai-stats", async (req, res) => {
-    try {
-        const normalCount = await Donor.countDocuments({ ai_result: "normal" });
-        const infectedCount = await Donor.countDocuments({ ai_result: "infected" });
+  try {
+    const normalCount = await Donor.countDocuments({ ai_result: "normal" });
+    const infectedCount = await Donor.countDocuments({ ai_result: "infected" });
 
-        res.json({
-            normal: normalCount,
-            infected: infectedCount,
-            total: normalCount + infectedCount
-        });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+    res.json({
+      normal: normalCount,
+      infected: infectedCount,
+      total: normalCount + infectedCount,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-/* 3. POST donor + AI analysis */
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "Image upload failed" });
     }
 
-    const imagePath = path.resolve(req.file.path);
-
-    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:5001/analyze";
-    
-    // Convert absolute path to relative path for the flask app
-    const relativeImagePath = req.file.path.replace(/\\/g, "/");
+    let finalResult;
+    let confidence;
 
     try {
-      const fetch = (await import('node-fetch')).default;
-      const aiRes = await fetch(aiServiceUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imagePath: relativeImagePath })
-      });
-
-      if (!aiRes.ok) {
-        throw new Error(`AI Service returned ${aiRes.status}`);
-      }
-
-      const aiData = await aiRes.json();
-      const finalResult = aiData.result;
-      const confidence = aiData.confidence;
-
-      // --- CREATE DONOR OBJECT ---
-      const donorData = new Donor({
-        name: req.body.name,
-        email: req.body.email,
-        age: req.body.age,
-        blood_group: req.body.blood_group,
-        image: req.file.path,
-        ai_result: finalResult,
-        confidence: confidence
-      });
-
-      if (finalResult === "normal") {
-        await donorData.save();
-        console.log("💾 Donor saved (Normal)");
-        
-        return res.status(201).json({
-          result: "normal",
-          confidence: confidence,
-          imagePath: req.file.path
-        });
-      } else {
-        await donorData.save();
-        console.log("🚫 Infection detected. Saved to DB as 'infected' for Admin Stats.");
-        
-        return res.status(200).json({
-          result: "infected",
-          confidence: confidence,
-          imagePath: req.file.path
-        });
-      }
+      const aiData = await analyzeBloodImage(req.file.path);
+      finalResult = aiData.result;
+      confidence = aiData.confidence;
     } catch (error) {
-      console.error("❌ AI PROCESS ERROR:", error);
-      return res.status(500).json({
+      console.error("AI PROCESS ERROR:", error.message);
+      return res.status(502).json({
         error: "AI analysis failed",
-        details: error.message
+        details: error.message,
       });
     }
 
+    if (!isDatabaseReady()) {
+      return res.status(503).json({
+        error: "Analysis completed but database is unavailable",
+        result: finalResult,
+        confidence,
+      });
+    }
+
+    const donorData = new Donor({
+      name: req.body.name,
+      email: req.body.email,
+      age: req.body.age,
+      blood_group: req.body.blood_group,
+      image: req.file.path,
+      ai_result: finalResult,
+      confidence: confidence,
+    });
+
+    await donorData.save();
+
+    if (finalResult === "normal") {
+      console.log("Donor saved (Normal)");
+      return res.status(201).json({
+        result: "normal",
+        confidence: confidence,
+        imagePath: req.file.path,
+      });
+    }
+
+    console.log("Infection detected — saved as infected for admin stats");
+    return res.status(200).json({
+      result: "infected",
+      confidence: confidence,
+      imagePath: req.file.path,
+    });
   } catch (err) {
-    console.error("❌ SERVER ERROR:", err);
-    res.status(500).json({ error: "Donor submission failed" });
+    console.error("SERVER ERROR:", err);
+    res.status(500).json({ error: "Donor submission failed", details: err.message });
   }
 });
 

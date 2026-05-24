@@ -6,7 +6,7 @@ Set these on **vitallink-backend** → Environment:
 |-----|----------------|
 | `MONGO_URI` | `mongodb+srv://user:pass@cluster.mongodb.net/vitallink?retryWrites=true&w=majority` |
 | `JWT_SECRET` | long random string (64+ chars) |
-| `AI_SERVICE_URL` | `https://vitallink-ai-service.onrender.com/analyze` |
+| `AI_SERVICE_URL` | `https://vitallink-ai-service.onrender.com/analyze` (required for blood sample AI) |
 | `ADMIN_EMAIL` | your admin login email |
 | `ADMIN_PASSWORD` | your admin password |
 

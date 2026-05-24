@@ -1,8 +1,14 @@
 require("dotenv").config();
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const authRoutes = require('./routes/auth');
 const donorRoutes = require('./routes/donors');
@@ -35,6 +41,9 @@ app.get('/api/health', (req, res) => {
     database: DB_STATE[dbState] || 'unknown',
     mongoConfigured: Boolean(MONGO_URI),
     aiServiceConfigured: Boolean(process.env.AI_SERVICE_URL),
+    aiServiceUrl: process.env.AI_SERVICE_URL
+      ? process.env.AI_SERVICE_URL.replace(/\/analyze\/?$/, '') + '/analyze'
+      : null,
   });
 });
 

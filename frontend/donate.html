@@ -472,9 +472,11 @@ imageInput.addEventListener("change", async () => {
         bar.style.transition = "width 0.4s cubic-bezier(0.23, 1, 0.32, 1)"; 
         bar.style.width = "100%";
 
-        if (!res.ok) throw new Error("Analysis failed");
-
         const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.details || data.error || "Analysis failed");
+        }
 
         // Short delay so user sees the bar hit 100% before it vanishes
         setTimeout(() => {
@@ -514,9 +516,15 @@ imageInput.addEventListener("change", async () => {
     } catch (err) {
         clearInterval(progressInterval);
         document.getElementById("progressContainer").style.display = "none";
-        console.error("❌ Error:", err);
-        aiStatus.textContent = "⚠️ Error analyzing sample. Please try again.";
+        console.error("Error:", err);
+        const msg = err.message && err.message !== "Failed to fetch"
+            ? err.message
+            : "Could not reach the server. Wait a moment (Render cold start) and try again.";
+        aiStatus.textContent = "⚠️ " + msg;
         aiStatus.style.color = "red";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Retry — select image again";
+        submitBtn.style.background = "linear-gradient(135deg, #e11d48, #b91c1c)";
     }
 });
 

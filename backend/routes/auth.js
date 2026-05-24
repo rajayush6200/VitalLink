@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { isDatabaseReady, databaseUnavailableResponse } = require('../utils/db');
 
 /* ================= REGISTER ================= */
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
+
+  if (!isDatabaseReady()) {
+    return databaseUnavailableResponse(res);
+  }
 
   try {
     // check existing user
@@ -27,6 +32,7 @@ router.post('/register', async (req, res) => {
 
     res.json({ message: 'User registered successfully' });
   } catch (err) {
+    console.error('Registration error:', err.message);
     res.status(500).json({ error: 'Registration failed' });
   }
 });
@@ -34,6 +40,10 @@ router.post('/register', async (req, res) => {
 /* ================= LOGIN ================= */
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
+  if (!isDatabaseReady()) {
+    return databaseUnavailableResponse(res);
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -58,6 +68,7 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
+    console.error('Login error:', err.message);
     res.status(500).json({ error: 'Login failed' });
   }
 });

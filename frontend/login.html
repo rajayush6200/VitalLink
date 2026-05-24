@@ -578,7 +578,11 @@
         const data = await res.json();
 
         if (!res.ok) {
-          alert(data.error || "Invalid email or password");
+          if (res.status === 503) {
+            alert(data.error + (data.hint ? "\n\n" + data.hint : ""));
+          } else {
+            alert(data.error || "Invalid email or password");
+          }
           return;
         }
 

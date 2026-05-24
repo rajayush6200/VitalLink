@@ -1,0 +1,110 @@
+/* =========================
+   GLOBAL STYLES
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  background: #222;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 35px;
+  margin-right: 10px;
+}
+
+.logo span {
+  color: red;
+  font-weight: bold;
+}
+
+/* NAV LINKS */
+.navbar nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 12px;          /* FIXED pill size */
+  margin: 0 6px;
+  border-radius: 999px;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.navbar nav a:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ACTIVE LINK */
+.navbar nav a.active {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero-img {
+  width: 100%;
+  height: auto;
+}
+
+/* =========================
+   INFO / CONTENT
+========================= */
+.info {
+  padding: 20px;
+  text-align: center;
+}
+
+.page-content p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   ABOUT PAGE IMAGE
+========================= */
+.about-image {
+  max-width: 350px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media screen and (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar nav {
+    margin-top: 10px;
+  }
+
+  .navbar nav a {
+    margin: 4px 4px;
+  }
+}

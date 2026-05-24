@@ -1,0 +1,597 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Become a Donor - Blood Bank</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        #progressBar {
+    width: 0%;
+    background: var(--primary-red);
+    height: 100%;
+    border-radius: 10px;
+    /* This makes the bar move smoothly between percentage updates */
+    transition: width 0.8s ease; 
+}
+        :root {
+            --primary-red: #e11d48;
+            --red-dark: #b91c1c;
+            --accent-blue: #4f46e5;
+            --glass-bg: rgba(15,23,42,0.55);
+            --inner-card: rgba(248,250,252,0.98);
+            --glass-border: rgba(148,163,184,0.35);
+            --shadow: 0 18px 45px rgba(15,23,42,0.65);
+            --shadow-light: 0 10px 30px rgba(15,23,42,0.4);
+            --gradient-bg: radial-gradient(circle at 0% 0%, #f97316 0%, transparent 45%),
+                           radial-gradient(circle at 100% 0%, #22c55e 0%, transparent 40%),
+                           radial-gradient(circle at 0% 100%, #38bdf8 0%, transparent 40%),
+                           linear-gradient(135deg, #312e81 0%, #7c3aed 45%, #be123c 100%);
+            --text-dark: #020617;
+        }
+
+        html, body {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+            color: #e5e7eb;
+            padding-top: 80px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("assets/log.jpg") center/cover no-repeat fixed;
+            z-index: -2;
+            opacity: 0.1;
+            mix-blend-mode: soft-light;
+        }
+
+        /* NAVBAR – same style as new theme */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 50px;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15,23,42,0.8);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-light);
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 5px 15px rgba(248,113,113,0.7));
+            animation: pulse 2.2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.05); }
+        }
+
+        .navbar .logo span {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg,#fee2e2,#fecaca,#f97373);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+            max-width: 70%;
+        }
+
+        .navbar ul li { flex-shrink: 0; }
+
+        .navbar ul li a {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-weight: 600;
+            padding: 0.7rem 1.2rem;
+            border-radius: 999px;
+            transition: transform 0.18s ease, box-shadow 0.18s ease,
+                        background 0.2s ease, color 0.2s ease;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .navbar ul li a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 0 0,rgba(248,113,113,.4),transparent 55%);
+            transform: translateX(-120%);
+            transition: transform .4s ease;
+            opacity: .9;
+            pointer-events: none;
+        }
+
+        .navbar ul li a::after {
+            content:'';
+            position:absolute;
+            left:50%;
+            bottom:6px;
+            width:0;
+            height:2px;
+            border-radius:999px;
+            background:linear-gradient(90deg,#fb7185,#f97316);
+            transition:width .25s ease,left .25s ease;
+        }
+
+        .navbar ul li a:hover::before {
+            transform: translateX(0);
+        }
+
+        .navbar ul li a:hover {
+            color:#fef2f2;
+            box-shadow:0 10px 25px rgba(15,23,42,0.6);
+            transform:translateY(-2px);
+        }
+
+        .navbar ul li a:hover::after{
+            width:60%;
+            left:20%;
+        }
+
+        .navbar ul li a.active {
+            background: linear-gradient(135deg,#f97373,#ef4444);
+            color:#fef2f2;
+            box-shadow:0 12px 30px rgba(248,113,113,0.7);
+            transform:none;
+        }
+
+        .navbar ul li a.active::before { opacity:0; }
+
+        /* Layout under navbar */
+        .page-wrapper {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 20px 20px;
+        }
+
+        /* Container (form card) – adapted to dark glass theme */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 32px 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Heading */
+        h2 {
+            text-align: center;
+            color: #fef2f2;
+            margin-bottom: 24px;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        /* Form layout */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* Labels */
+        label {
+            color: #f9fafb;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* Inputs & selects */
+        input,
+        select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,0.5);
+            background: rgba(248,250,252,0.97);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+        }
+
+        #bloodImage {
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(225,29,72,0.25);
+            transform: translateY(-1px);
+        }
+
+        input::placeholder {
+            color: rgba(107,114,128,0.9);
+        }
+
+        /* Submit button */
+        button {
+            margin-top: 8px;
+            padding: 0.9rem 1rem;
+            background: linear-gradient(135deg, var(--primary-red), var(--red-dark));
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.15s ease;
+            box-shadow: 0 12px 32px rgba(225,29,72,0.7);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px rgba(225,29,72,0.85);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 10px 24px rgba(225,29,72,0.7);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Result box */
+        #analysisBox {
+            margin-top: 24px;
+            padding: 18px 16px;
+            background: var(--inner-card);
+            border-radius: 18px;
+            display: none;
+            text-align: center;
+            border: 1px solid rgba(209,213,219,0.9);
+            color: var(--text-dark);
+        }
+
+        #previewImg {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 10px 0 4px;
+        }
+
+        @media screen and (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 2rem;
+                height: auto;
+            }
+
+            .navbar ul {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                justify-content: center;
+                max-width: none;
+            }
+
+            .page-wrapper {
+                padding-top: 7rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .navbar ul li a {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="assets/blood-drop.png" alt="Logo">
+        <span>VitalLink</span>
+    </div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="why-donate.html">Why Donate Blood</a></li>
+        <li><a href="donate.html" class="active">Become a Donor</a></li>
+        <li><a href="need-blood.html">Need Blood</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+</header>
+
+<div class="page-wrapper" id="donor-section">
+    <div class="container">
+        <h2>Donor Registration</h2>
+        
+        <form id="donorForm" onsubmit="return false;">
+            <label>Full Name</label>
+            <input type="text" name="name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Age</label>
+            <input type="number" name="age" min="18" max="60" required>
+
+            <label>Blood Group</label>
+            <select name="blood_group" required>
+                <option value="">Select</option>
+                <option>A+</option><option>A-</option>
+                <option>B+</option><option>B-</option>
+                <option>O+</option><option>O-</option>
+                <option>AB+</option><option>AB-</option>
+            </select>
+
+            <label>Upload Blood Sample</label>
+            <input type="file" name="image" id="bloodImage" accept="image/*" required>
+
+            <input type="hidden" name="ai_result" id="ai_result">
+            <input type="hidden" name="confidence" id="confidence">
+
+            <button type="button" id="submitBtn" disabled>Submit Donor Details</button>
+        </form>
+
+        <div id="analysisBox">
+            <h3 style="color: #111827;">🧠 AI Analysis Result</h3>
+            <img id="previewImg" src="" alt="Blood Sample Preview">
+            <p id="aiStatus" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;"></p>
+            <p id="aiConfidence" style="color: #4b5563;"></p>
+            <div id="progressContainer" style="width:100%; background:#e2e8f0; height:8px; border-radius:10px; margin:15px 0; display:none;">
+    <div id="progressBar" style="width:0%; background:var(--primary-red); height:100%; border-radius:10px; transition: width 0.3s;"></div>
+</div>
+            <p id="finalMsg" style="font-weight: bold;"></p>
+
+            <div id="donorCard" style="display:none; width: 350px; background: white; border-radius: 15px; padding: 20px; border: 2px solid var(--primary-red); color: black; text-align: left; margin: 20px auto; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+                <div style="display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--primary-red); padding-bottom: 10px; margin-bottom: 15px;">
+                    <img src="assets/blood-drop.png" width="30">
+                    <h4 style="margin: 0; color: var(--primary-red);">BLOOD DONOR ID</h4>
+                </div>
+                <p><strong>Name:</strong> <span id="cardName"></span></p>
+                <p><strong>Blood Group:</strong> <span id="cardBlood"></span></p>
+                <p><strong>Status:</strong> <span style="color: green; font-weight: bold;">VERIFIED ELIGIBLE</span></p>
+                <p><strong>Date:</strong> <span id="cardDate"></span></p>
+                <div style="margin-top: 15px; font-size: 0.8rem; text-align: center; color: #666;">
+                    "Every drop counts. Thank you for saving a life."
+                </div>
+            </div>
+
+            <button id="downloadBtn" type="button" style="display:none; background:#22c55e; margin-top:10px; border:none; border-radius:999px; padding:0.7rem 1.4rem; color:#fefefe; font-weight:600; cursor:pointer; box-shadow:0 10px 25px rgba(34,197,94,0.6);">
+                📥 Download Donor Card
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = "http://localhost:5000";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const imageInput = document.getElementById("bloodImage");
+    const submitBtn = document.getElementById("submitBtn");
+    const analysisBox = document.getElementById("analysisBox");
+    const aiStatus = document.getElementById("aiStatus");
+    const previewImg = document.getElementById("previewImg");
+    const donorForm = document.getElementById("donorForm");
+    const finalMsg = document.getElementById("finalMsg");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+   // --- 1. THE MAIN EVENT LISTENER ---
+imageInput.addEventListener("change", async () => {
+    if (!imageInput.files || !imageInput.files[0]) return;
+
+    // UI Initial State
+    analysisBox.style.display = "block";
+    previewImg.style.display = "none";
+    aiStatus.textContent = "⏳ Deep AI Analysis in progress... This may take a moment.";
+    aiStatus.style.color = "#92400e";
+    finalMsg.textContent = "";
+    
+    // Disable buttons to prevent double-submission
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Processing...";
+    submitBtn.style.background = "gray";
+
+    // Start the slow-moving progress bar
+    const progressInterval = startFakeProgress();
+
+    // Prepare Data
+    const formData = new FormData();
+    formData.append("image", imageInput.files[0]);
+    formData.append("name", donorForm.name.value);
+    formData.append("email", donorForm.email.value);
+    formData.append("age", donorForm.age.value);
+    formData.append("blood_group", donorForm.blood_group.value);
+
+    try {
+        const res = await fetch(`${API_BASE}/api/donors`, {
+  method: "POST",
+  body: formData
+});
+
+        // ACTUAL RESULT RECEIVED: Clear interval and snap to 100%
+        clearInterval(progressInterval);
+        const bar = document.getElementById("progressBar");
+        bar.style.transition = "width 0.4s cubic-bezier(0.23, 1, 0.32, 1)"; 
+        bar.style.width = "100%";
+
+        if (!res.ok) throw new Error("Analysis failed");
+
+        const data = await res.json();
+
+        // Short delay so user sees the bar hit 100% before it vanishes
+        setTimeout(() => {
+            document.getElementById("progressContainer").style.display = "none";
+            
+            // Display Results
+            const localURL = URL.createObjectURL(imageInput.files[0]);
+            previewImg.src = localURL;
+            previewImg.style.display = "block";
+
+            if (data.result === "infected") {
+                aiStatus.textContent = "DIAGNOSIS: INFECTION DETECTED";
+                aiStatus.style.color = "#dc2626";
+                finalMsg.textContent = "❌ Health criteria not met. Registration blocked.";
+                finalMsg.style.color = "#991b1b";
+                submitBtn.textContent = "Registration Blocked";
+            } else {
+                aiStatus.textContent = "DIAGNOSIS: NORMAL";
+                aiStatus.style.color = "#16a34a";
+                finalMsg.textContent = "✅ Sample verified! You are eligible to donate.";
+                finalMsg.style.color = "#16a34a";
+
+                // Populate and show Donor Card
+                document.getElementById("cardName").textContent = donorForm.name.value;
+                document.getElementById("cardBlood").textContent = donorForm.blood_group.value;
+                document.getElementById("cardDate").textContent = new Date().toLocaleDateString();
+                document.getElementById("donorCard").style.display = "block";
+                downloadBtn.style.display = "inline-block";
+
+                // Re-enable submit
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Donor Details";
+                submitBtn.style.background = "linear-gradient(135deg, #e11d48, #b91c1c)";
+            }
+        }, 600);
+
+    } catch (err) {
+        clearInterval(progressInterval);
+        document.getElementById("progressContainer").style.display = "none";
+        console.error("❌ Error:", err);
+        aiStatus.textContent = "⚠️ Error analyzing sample. Please try again.";
+        aiStatus.style.color = "red";
+    }
+});
+
+// --- 2. THE SLOW PROGRESS FUNCTION ---
+function startFakeProgress() {
+    const bar = document.getElementById("progressBar");
+    const container = document.getElementById("progressContainer");
+    
+    container.style.display = "block";
+    bar.style.transition = "width 0.8s ease"; // Smooth out the individual ticks
+    bar.style.width = "0%"; 
+    
+    let width = 0;
+    // Update every 1 second (1000ms) for a very calm, slow movement
+    const interval = setInterval(() => {
+        if (width >= 94) {
+            // Stay at 94% until the actual fetch result calls clearInterval
+            clearInterval(interval);
+        } else {
+            // Increment by very small random amounts (1% to 3%)
+            let increment = Math.random() * 2 + 1; 
+            width += increment;
+            
+            bar.style.width = (width > 94 ? 94 : width) + "%";
+        }
+    }, 1000); 
+    
+    return interval;
+}
+    submitBtn.addEventListener("click", () => {
+        alert("✅ Donor registration confirmed and saved to database!");
+        donorForm.reset();
+        analysisBox.style.display = "none";
+        previewImg.src = "";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submit Donor Details";
+        submitBtn.style.background = "gray";
+        document.getElementById("donorCard").style.display = "none";
+        downloadBtn.style.display = "none";
+    });
+
+    downloadBtn.addEventListener("click", () => {
+        const card = document.getElementById("donorCard");
+        html2canvas(card).then(canvas => {
+            const link = document.createElement("a");
+            link.download = `DonorCard_${document.getElementById("cardName").textContent || "Donor"}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    });
+});
+
+function startFakeProgress() {
+    const bar = document.getElementById("progressBar");
+    const container = document.getElementById("progressContainer");
+    container.style.display = "block";
+    bar.style.width = "0%"; 
+    
+    let width = 0;
+    // We use a slower interval (800ms) and very small increments
+    const interval = setInterval(() => {
+        if (width >= 92) {
+            // Stay at 92% until the actual fetch result calls clearInterval
+            clearInterval(interval);
+        } else {
+            // Move by a very small random amount (1% to 4%)
+            let increment = Math.random() * 3 + 1; 
+            width += increment;
+            
+            // Cap it at 92 so it doesn't look finished early
+            bar.style.width = (width > 92 ? 92 : width) + "%";
+        }
+    }, 800); // Slower updates
+    return interval;
+}
+</script>
+
+</body>
+
+</html>

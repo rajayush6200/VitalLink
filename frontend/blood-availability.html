@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Blood Availability | Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+      color: #f9fafb;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(15,23,42,0.6);
+      border-radius: 24px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.6);
+      backdrop-filter: blur(18px);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      opacity: 0.85;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .stock-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(15,23,42,0.9);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .stock-table th,
+    .stock-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .stock-table th {
+      background: rgba(15,23,42,1);
+      color: #e5e7eb;
+    }
+
+    .stock-table tr:nth-child(even) {
+      background: rgba(30,64,175,0.4);
+    }
+
+    .stock-table tr:nth-child(odd) {
+      background: rgba(30,64,175,0.26);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-ok {
+      background: rgba(34,197,94,0.2);
+      color: #22c55e;
+    }
+
+    .badge-low {
+      background: rgba(234,179,8,0.2);
+      color: #eab308;
+    }
+
+    .badge-critical {
+      background: rgba(220,38,38,0.2);
+      color: #fecaca;
+      animation: blink 1.4s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    .urgency-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .u-ok { background: #22c55e; }
+    .u-low { background: #eab308; }
+    .u-critical { background: #dc2626; }
+
+    .legend {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0.85;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .last-updated {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid rgba(148,163,184,0.6);
+      box-shadow: 0 6px 18px rgba(15,23,42,0.6);
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(30,64,175,0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.8);
+    }
+
+    /* NEW: heading row with graph button */
+    .heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .graph-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 8px 22px rgba(234,88,12,0.6);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .graph-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(234,88,12,0.8);
+    }
+
+    .graph-btn span.icon {
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="top-bar">
+      <a href="admin-dashboard.html" class="back-btn">← Back to Admin Dashboard</a>
+    </div>
+
+    <!-- heading + graph button -->
+    <div class="heading-row">
+      <h1>Live Blood Availability</h1>
+      <!-- link this to your graph page (create blood-graph.html later) -->
+      <a href="blood-graph.html" class="graph-btn">
+        <span class="icon">📊</span>
+        View Graph
+      </a>
+    </div>
+
+    <p class="subtitle">
+      Current stock levels by blood group. Urgency badges highlight low and critical levels.
+    </p>
+
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Blood Group</th>
+          <th>Units in stock</th>
+          <th>Minimum safe level</th>
+          <th>Status</th>
+          <th>Urgency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- STATIC SAMPLE DATA -->
+        <tr>
+          <td>A+</td>
+          <td>32</td>
+          <td>20</td>
+          <td><span class="badge badge-ok">OK</span></td>
+          <td><span class="urgency-dot u-ok"></span>Normal</td>
+        </tr>
+        <tr>
+          <td>A−</td>
+          <td>6</td>
+          <td>15</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td><span class="urgency-dot u-low"></span>Monitor / plan camp</td>
+        </tr>
+        <tr>
+          <td>B+</td>
+          <td>18</td>
+          <td>18</td>
+          <td><span class="badge badge-ok">OK</span></td>
+          <td><span class="urgency-dot u-ok"></span>Normal</td>
+        </tr>
+        <tr>
+          <td>B−</td>
+          <td>3</td>
+          <td>10</td>
+          <td><span class="badge badge-critical">Critical</span></td>
+          <td><span class="urgency-dot u-critical"></span>Urgent donors required</td>
+        </tr>
+        <tr>
+          <td>O+</td>
+          <td>40</td>
+          <td>25</td>
+          <td><span class="badge badge-ok">OK</span></td>
+          <td><span class="urgency-dot u-ok"></span>Normal</td>
+        </tr>
+        <tr>
+          <td>O−</td>
+          <td>1</td>
+          <td>12</td>
+          <td><span class="badge badge-critical">Out of stock</span></td>
+          <td><span class="urgency-dot u-critical"></span>Highest priority</td>
+        </tr>
+        <tr>
+          <td>AB+</td>
+          <td>9</td>
+          <td>8</td>
+          <td><span class="badge badge-ok">OK</span></td>
+          <td><span class="urgency-dot u-ok"></span>Normal</td>
+        </tr>
+        <tr>
+          <td>AB−</td>
+          <td>2</td>
+          <td>6</td>
+          <td><span class="badge badge-low">Low</span></td>
+          <td><span class="urgency-dot u-low"></span>Monitor closely</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="legend">
+      <span><span class="badge badge-ok">OK</span> stock above safe level</span>
+      <span><span class="badge badge-low">Low</span> stock below safe level</span>
+      <span><span class="badge badge-critical">Critical</span> very low or zero stock</span>
+    </div>
+  </div>
+</body>
+
+
+</html>

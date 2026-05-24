@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VitalLink</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+/* FIXED: Proper Modal Positioning */
+:root {
+  --primary-red: #640d0d;
+  --red-dark: #7e1212;
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  --shadow-light: 0 4px 20px rgba(0,0,0,0.1);
+  --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --text-dark: #1f2937;
+  --text-light: #f9fafb;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,119,198,0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120,219,255,0.3) 0%, transparent 50%),
+    var(--gradient-bg);
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/log.jpg") center/cover no-repeat;
+  z-index: -2;
+  opacity: 0.08;
+}
+
+.navbar {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 1rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-light);
+  transform: translateZ(0);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 4px 12px rgba(220,38,38,0.4));
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.logo span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+  max-width: 70%;
+}
+
+nav a {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.8rem 1.2rem;
+  border-radius: 20px;
+  margin: 0 0.2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(220,38,38,0.1), transparent);
+  transition: left 0.5s;
+}
+
+nav a:hover::before { left: 100%; }
+
+nav a:hover, nav a.active {
+  background: rgba(220,38,38,0.15);
+  color: var(--primary-red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220,38,38,0.3);
+}
+
+.profile {
+  position: relative;
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+.profile-btn {
+  background: linear-gradient(135deg, var(--primary-red), var(--red-dark));
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(220,38,38,0.4);
+  white-space: nowrap;
+}
+
+.profile-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(220,38,38,0.6);
+}
+
+.profile-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  min-width: 200px;
+  margin-top: 0.5rem;
+  animation: fadeInUp 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.profile-menu button {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-dark);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.profile-menu button:hover {
+  background: rgba(220,38,38,0.1);
+  color: var(--primary-red);
+  padding-left: 1.5rem;
+}
+
+.profile-menu button:last-child { border-bottom: none; }
+
+/* ===== HERO SECTION UPDATED ===== */
+.hero {
+  padding: 2.5rem 5%;         /* less empty vertical space around */
+}
+
+.hero-image-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* Bigger image, fills wrapper fully */
+.hero-img {
+  width: 100%;
+  height: 480px;              /* increased from 400px */
+  object-fit: cover;
+  display: block;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));
+  transition: transform 0.6s ease;
+}
+
+.hero-img:hover { transform: scale(1.02); }
+
+/* Slogan overlay to visually fill space */
+.hero-overlay {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.7);
+  padding: 0 1rem;
+}
+
+.hero-overlay h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.hero-overlay p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* INFO CARD */
+.info {
+  max-width: 900px;
+  margin: 3rem auto 4rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 3rem;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.8s ease-out 0.3s both;
+  transform: translateZ(0);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.info h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.info p {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* MODALS (unchanged) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  padding: 2.5rem;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: zoomIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  overflow-y: auto;
+  transform: translateZ(0);
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.modal-box h2 {
+  background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.request-card, .message-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.request-card:hover, .message-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+
+.status {
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.Pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #f59e0b;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.Approved {
+  background: rgba(34, 197, 94, 0.2);
+  color: #10b981;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.Rejected {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.close-btn {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, var(--primary-red), var(--red-dark));
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  width: 100%;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 25px rgba(220,38,38,0.4);
+}
+
+.close-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(220,38,38,0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; padding: 1rem 2rem; }
+  nav { flex: 1; justify-content: center; flex-wrap: wrap; gap: 0.3rem; max-width: none; }
+  nav a { padding: 0.6rem 0.8rem; font-size: 0.9rem; margin: 0; }
+  .profile { margin-left: 0.5rem; }
+
+  .hero { padding: 1.5rem 1.5rem; }
+  .hero-img { height: 320px; }
+  .hero-overlay h1 { font-size: 1.9rem; }
+  .hero-overlay p { font-size: 0.95rem; }
+
+  .modal-box { width: 95%; padding: 2rem; margin: 1rem; }
+}
+</style>
+</head>
+
+<body>
+<script>
+window.user = JSON.parse(localStorage.getItem("user"));
+if (!window.user) {
+  window.location.href = "login.html";
+}
+</script>
+
+<header class="navbar">
+  <div class="logo">
+    <img src="assets/blood-drop.png" alt="Logo">
+    <span>VitalLink</span>
+    
+  </div>
+
+  <nav>
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="why-donate.html">Why Donate Blood</a>
+    <a href="donate.html">Become a Donor</a>
+    <a href="need-blood.html">Need Blood</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="#" onclick="openMessages()">My Messages</a>
+  </nav>
+
+  <div class="profile">
+    <button class="profile-btn" onclick="toggleProfileMenu()">Profile</button>
+    <div class="profile-menu" id="profileMenu">
+      <button onclick="showMyRequests()">My Blood Requests</button>
+      <button onclick="toggleTheme()">Toggle Theme</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== UPDATED HERO SECTION ===== -->
+<section class="hero">
+  <div class="hero-image-wrapper">
+    <img src="assets/hero1.jpg" class="hero-img" alt="Hero">
+    <div class="hero-overlay">
+      <h1>Every Drop Counts</h1>
+      <p>Donate today. Save a life tomorrow.</p>
+    </div>
+  </div>
+</section>
+
+<section class="info">
+  <h2>DID YOU KNOW?</h2>
+  <p>
+    One blood donation can save up to three lives by helping patients
+    undergoing surgery, trauma care, and chronic illnesses.
+  </p>
+</section>
+
+<!-- MODALS -->
+<div id="requestModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2>My Blood Requests</h2>
+    <div id="modalContent">
+      <!-- Dynamic content loads here -->
+    </div>
+    <button class="close-btn" onclick="closeRequestModal()">Close</button>
+  </div>
+</div>
+
+<div id="messageModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2>My Messages</h2>
+    <div id="myMessages">
+      <!-- Dynamic content loads here -->
+    </div>
+    <button class="close-btn" onclick="closeMessages()">Close</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+function toggleProfileMenu() {
+  const menu = document.getElementById("profileMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+document.addEventListener("click", function(e) {
+  const profile = document.querySelector(".profile");
+  const menu = document.getElementById("profileMenu");
+  if (!profile.contains(e.target)) {
+    menu.style.display = "none";
+  }
+});
+
+async function showMyRequests() {
+  const modal = document.getElementById("requestModal");
+  const content = document.getElementById("modalContent");
+  
+  modal.style.display = "flex";
+  content.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dark);">Loading requests...</div>';
+
+  try {
+    const res = await fetch(
+  `http://localhost:5000/api/requests/user/${window.user.id}`
+);
+
+    const data = await res.json();
+
+    if (data.length === 0) {
+      content.innerHTML = "<p style='padding:2rem;color:var(--text-dark);'>No blood requests found.</p>";
+      return;
+    }
+
+    content.innerHTML = "";
+    data.forEach(r => {
+      content.innerHTML += `
+  <div class="request-card">
+    <p><strong>Blood Group:</strong> ${r.bloodGroup}</p>
+    <p><strong>Reason:</strong> ${r.reason}</p>
+
+    <p class="status ${r.status}">
+      Status: ${r.status}
+    </p>
+
+    ${
+      r.status === "Rejected"
+        ? `<p style="color:red;"><strong>Rejection Reason:</strong> ${r.rejectionReason}</p>`
+        : ""
+    }
+
+    ${
+      r.status === "Approved"
+        ? `<button onclick='downloadRequestPDF(${JSON.stringify(r)})'
+                   style="margin-top:10px;background:#16a34a;color:white;
+                          border:none;padding:8px 12px;border-radius:6px;
+                          cursor:pointer;">
+             ⬇ Download Request PDF
+           </button>`
+        : ""
+    }
+  </div>
+`;
+    });
+  } catch (err) {
+    content.innerHTML = "<p style='padding:2rem;color:#ef4444;'>Failed to load requests</p>";
+  }
+}
+
+function closeRequestModal() {
+  document.getElementById("requestModal").style.display = "none";
+}
+
+async function openMessages() {
+  const modal = document.getElementById("messageModal");
+  const content = document.getElementById("myMessages");
+  
+  modal.style.display = "flex";
+  content.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dark);">Loading messages...</div>';
+  
+  loadMyMessages();
+}
+
+function closeMessages() {
+  document.getElementById("messageModal").style.display = "none";
+}
+
+async function loadMyMessages() {
+  try {
+   const res = await fetch(
+  `http://localhost:5000/api/messages/user/${window.user.id}`
+);
+
+    const data = await res.json();
+    const box = document.getElementById("myMessages");
+    
+    if (data.length === 0) {
+      box.innerHTML = "<p style='padding:2rem;color:var(--text-dark);'>No messages found.</p>";
+      return;
+    }
+    
+    box.innerHTML = "";
+    data.forEach(m => {
+      box.innerHTML += `
+        <div class="message-card">
+          <p><strong>You:</strong> ${m.message}</p>
+          ${m.reply ? `<p style="color:#10b981;font-weight:600;"><strong>Admin:</strong> ${m.reply}</p>` : `<p class="status Pending">Awaiting reply</p>`}
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("myMessages").innerHTML = "<p style='padding:2rem;color:#ef4444;'>Failed to load messages</p>";
+  }
+}
+
+document.querySelectorAll('.modal-overlay').forEach(modal => {
+  modal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+    }
+  });
+});
+
+function downloadRequestPDF(request) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Blood Request Approval Slip", 105, 20, { align: "center" });
+
+  doc.setFontSize(12);
+  doc.text("VitalLink Management System", 105, 28, { align: "center" });
+
+  doc.line(20, 32, 190, 32);
+
+  let y = 45;
+
+  doc.setFontSize(11);
+  doc.text(`Request ID: ${request._id}`, 20, y); y += 10;
+  doc.text(`Name: ${request.name}`, 20, y); y += 10;
+  doc.text(`Phone: ${request.phone}`, 20, y); y += 10;
+  doc.text(`Blood Group: ${request.bloodGroup}`, 20, y); y += 10;
+  doc.text(`Reason: ${request.reason}`, 20, y); y += 10;
+  doc.text(`Status: ${request.status}`, 20, y); y += 10;
+  doc.text(`Approved On: ${new Date(request.updatedAt).toLocaleDateString()}`, 20, y);
+
+  doc.line(20, 260, 190, 260);
+  doc.setFontSize(10);
+  doc.text(
+    "This is a system generated document. No signature required.",
+    105,
+    270,
+    { align: "center" }
+  );
+
+  doc.save(`Blood_Request_${request.bloodGroup}_${request._id}.pdf`);
+}
+</script>
+
+
+</body>
+
+</html>

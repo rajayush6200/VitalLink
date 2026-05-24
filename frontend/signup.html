@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup | VitalLink</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Signup Page - Perfect Glassmorphism Match */
+    :root {
+      --primary-red: #dc2626;
+      --red-dark: #b91c1c;
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      --shadow-light: 0 4px 20px rgba(0,0,0,0.1);
+      --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --text-dark: #1f2937;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,119,198,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120,219,255,0.3) 0%, transparent 50%),
+        var(--gradient-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("assets/sign.jpg") center/cover no-repeat;
+      z-index: -2;
+      opacity: 0.1;
+    }
+
+    .signup-container {
+      max-width: 420px;
+      margin: 2rem auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      padding: 3rem 2.5rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow), var(--shadow-light);
+      position: relative;
+      animation: slideUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .signup-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 2px;
+      background: linear-gradient(45deg, var(--primary-red), #ff6b6b, #dc2626, #b91c1c);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .signup-container:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+      border-radius: 2px;
+    }
+
+    label {
+      font-weight: 700;
+      margin-top: 1.5rem;
+      display: block;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 1.1rem 1.2rem;
+      margin-top: 0.5rem;
+      border-radius: 16px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 1rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em;
+      padding-right: 3rem;
+      cursor: pointer;
+      appearance: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary-red);
+      background: rgba(255,255,255,0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(220,38,38,0.25);
+    }
+
+    input::placeholder {
+      color: rgba(31,41,55,0.6);
+      font-weight: 500;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 2rem;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, var(--primary-red), var(--red-dark));
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 25px rgba(220,38,38,0.4);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(220,38,38,0.5);
+    }
+
+    button:active {
+      transform: translateY(-2px);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .link a {
+      color: var(--primary-red);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.98rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .link a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 50%;
+      background: var(--primary-red);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .link a:hover::after {
+      width: 100%;
+    }
+
+    .link a:hover {
+      color: var(--red-dark);
+      text-shadow: 0 2px 8px rgba(220,38,38,0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .signup-container {
+        margin: 1rem;
+        padding: 2rem 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* Loading animation */
+    .signup-container.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+<div class="signup-container">
+  <h2>Create Account</h2>
+
+  <form id="signupForm">
+    <label>Full Name</label>
+    <input type="text" id="name" required>
+
+    <label>Email</label>
+    <input type="email" id="email" required>
+
+    <label>Password</label>
+    <input type="password" id="password" required minlength="6">
+
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <div class="link">
+    Already have an account? <a href="login.html">Login</a>
+  </div>
+</div>
+
+<script>
+  const API_BASE = "http://localhost:5000";
+document.getElementById("signupForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const container = document.querySelector('.signup-container');
+  const btn = e.target.querySelector('button');
+  const originalText = btn.textContent;
+  
+  // Loading state
+  container.classList.add('loading');
+  btn.textContent = 'Creating Account...';
+  btn.disabled = true;
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/register`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ name, email, password })
+});
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Signup failed");
+      return;
+    }
+
+    alert("Account created successfully!");
+    window.location.href = "login.html";
+
+  } catch (err) {
+    alert("Server not reachable. Please try again.");
+    console.error(err);
+  } finally {
+    // Reset state
+    container.classList.remove('loading');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+});
+</script>
+
+
+
+</body>
+
+</html>

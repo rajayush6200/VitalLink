@@ -1,0 +1,22 @@
+{
+  "name": "vitallink",
+  "version": "1.0.0",
+  "description": "VitalLink — Full-stack Blood Bank Management System with AI-powered blood sample analysis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["blood-bank", "healthcare", "ai", "mongodb", "express", "nodejs"],
+  "author": "Ayush Raj <rajayush6200@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.2",
+    "multer": "^2.0.2"
+  }
+}

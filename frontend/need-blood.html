@@ -1,0 +1,418 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Need Blood | VitalLink</title>
+
+<style>
+:root {
+  --primary-red: #e11d48;
+  --primary-red-dark: #b91c1c;
+  --accent-blue: #4f46e5;
+  --glass-bg: rgba(15,23,42,0.55);
+  --inner-card: rgba(248,250,252,0.98);
+  --glass-border: rgba(148,163,184,0.35);
+  --shadow: 0 18px 45px rgba(15,23,42,0.65);
+  --shadow-soft: 0 10px 30px rgba(15,23,42,0.4);
+  --gradient-bg: radial-gradient(circle at 0% 0%, #f97316 0%, transparent 45%),
+                 radial-gradient(circle at 100% 0%, #22c55e 0%, transparent 40%),
+                 radial-gradient(circle at 0% 100%, #38bdf8 0%, transparent 40%),
+                 linear-gradient(135deg, #312e81 0%, #7c3aed 45%, #be123c 100%);
+  --text-dark: #020617;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--gradient-bg);
+  min-height:100vh;
+  padding-top:80px;
+  position:relative;
+  overflow-x:hidden;
+  color:#e5e7eb;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:url("assets/log.jpg") center/cover no-repeat fixed;
+  opacity:0.1;
+  mix-blend-mode:soft-light;
+  z-index:-2;
+}
+
+/* NAVBAR – same as other pages */
+.navbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:80px;
+  padding:1rem 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(15,23,42,0.8);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--glass-border);
+  box-shadow:var(--shadow-soft);
+  z-index:1000;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+  flex-shrink:0;
+}
+
+.logo img{
+  width:48px;
+  height:48px;
+  filter:drop-shadow(0 5px 15px rgba(248,113,113,0.7));
+  animation:pulse 2.2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+
+.logo span,
+.gradient-text{
+  font-size:1.4rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#fee2e2,#fecaca,#f97373);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  white-space:nowrap;
+}
+
+/* nav links with glow hover + active gradient */
+nav{
+  display:flex;
+  gap:1.5rem;
+  justify-content:center;
+  flex:1;
+  flex-wrap:wrap;
+}
+
+nav a{
+  position:relative;
+  display:block;
+  text-decoration:none;
+  color:#e5e7eb;
+  font-weight:600;
+  padding:0.7rem 1.2rem;
+  border-radius:999px;
+  font-size:0.9rem;
+  overflow:hidden;
+  white-space:nowrap;
+  transition:transform .18s ease, box-shadow .18s ease,
+             background .2s ease, color .2s ease;
+}
+
+nav a::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 0 0,rgba(248,113,113,.4),transparent 55%);
+  transform:translateX(-120%);
+  transition:transform .4s ease;
+  opacity:.9;
+}
+
+nav a::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:6px;
+  width:0;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#fb7185,#f97316);
+  transition:width .25s ease,left .25s ease;
+}
+
+nav a:hover::before{
+  transform:translateX(0);
+}
+
+nav a:hover{
+  color:#fef2f2;
+  box-shadow:0 10px 25px rgba(15,23,42,0.6);
+  transform:translateY(-2px);
+}
+
+nav a:hover::after{
+  width:60%;
+  left:20%;
+}
+
+nav a.active{
+  background:linear-gradient(135deg,#f97373,#ef4444);
+  color:#fef2f2;
+  box-shadow:0 12px 30px rgba(248,113,113,0.7);
+}
+
+nav a.active::before{opacity:0;}
+
+/* Main glass card */
+.container{
+  max-width:600px;
+  margin:4rem auto;
+  padding:3rem 2.5rem;
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  animation:slideUp .8s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+
+.container::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  padding:2px;
+  background:conic-gradient(from 130deg,#fb7185,#facc15,#22c55e,#38bdf8,#fb7185);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+
+.container:hover::before{
+  opacity:1;
+}
+
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(40px) scale(.95);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+h2{
+  text-align:center;
+  font-size:2.3rem;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:#fee2e2;
+  margin-bottom:2rem;
+}
+
+/* form */
+label{
+  font-weight:700;
+  margin-top:1.5rem;
+  display:block;
+  color:#e5e7eb;
+  font-size:1rem;
+  letter-spacing:.5px;
+  padding-left:.5rem;
+}
+
+input,select{
+  width:100%;
+  padding:1.1rem 1.4rem;
+  margin-top:.5rem;
+  border-radius:16px;
+  border:2px solid rgba(255,255,255,0.2);
+  background:rgba(248,250,252,0.96);
+  backdrop-filter:blur(12px);
+  font-size:1rem;
+  font-weight:500;
+  color:var(--text-dark);
+  outline:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.08);
+  transition:all .35s cubic-bezier(0.4,0,0.2,1);
+  appearance:none;
+}
+
+select{
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position:right 1.2rem center;
+  background-repeat:no-repeat;
+  background-size:1.4em;
+  padding-right:3rem;
+  cursor:pointer;
+}
+
+input:focus,select:focus{
+  border-color:var(--primary-red);
+  background:rgba(255,255,255,0.99);
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(225,29,72,0.35);
+}
+
+input::placeholder{
+  color:rgba(31,41,55,0.6);
+  font-weight:500;
+}
+
+/* button */
+button{
+  width:100%;
+  margin-top:2rem;
+  padding:1.3rem;
+  background:linear-gradient(135deg,var(--primary-red),var(--primary-red-dark));
+  color:#fefefe;
+  border:none;
+  border-radius:20px;
+  font-weight:800;
+  font-size:1.05rem;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 12px 32px rgba(225,29,72,0.65);
+  transition:all .35s cubic-bezier(0.4,0,0.2,1);
+}
+
+button::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);
+  transition:left .55s ease;
+}
+
+button:hover::before{
+  left:120%;
+}
+
+button:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 45px rgba(225,29,72,0.85);
+}
+
+button:active{
+  transform:translateY(-2px);
+}
+
+/* responsive */
+@media(max-width:600px){
+  .container{
+    margin:2.2rem 1.2rem;
+    padding:2.5rem 2rem;
+  }
+  h2{font-size:2rem;}
+  nav{gap:0.4rem;}
+  nav a{
+    padding:0.6rem 0.9rem;
+    font-size:0.9rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<header class="navbar">
+  <div class="logo">
+    <img src="assets/blood-drop.png" alt="Logo">
+    <span>VitalLink</span>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="why-donate.html">Why Donate Blood</a>
+    <a href="donate.html">Become A Donor</a>
+    <a href="need-blood.html" class="active">Need Blood</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h2>Request Blood</h2>
+
+  <form id="requestForm" onsubmit="submitRequest(event)">
+    <label>Your Name</label>
+    <input type="text" id="name" required>
+    
+    <label>Phone Number</label>
+    <input type="tel" id="phone" required>
+
+    <label>Blood Group</label>
+    <select id="bloodGroup" required>
+      <option value="">Select</option>
+      <option>A+</option><option>A-</option>
+      <option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option>
+      <option>O+</option><option>O-</option>
+    </select>
+
+    <label>Reason for Request</label>
+    <input type="text" id="reason" required>
+
+    <button type="submit">Request Blood</button>
+  </form>
+</main>
+
+<script>
+  const API_BASE = "http://localhost:5000";
+
+async function submitRequest(e) {
+  e.preventDefault();
+
+  const btn = e.target.querySelector('button');
+  const originalText = btn.textContent;
+  btn.textContent = 'Submitting Request...';
+  btn.disabled = true;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    alert("Please login first to request blood");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const data = {
+    userId: user.id,
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    bloodGroup: document.getElementById("bloodGroup").value,
+    reason: document.getElementById("reason").value
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/requests`, {
+
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert("✅ Blood request submitted successfully!");
+      e.target.reset();
+    } else {
+      alert(result.error || "Failed to submit request");
+    }
+  } catch (err) {
+    alert("❌ Server not reachable");
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+
+</html>

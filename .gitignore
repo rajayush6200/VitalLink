@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.production
+.env.*
+
+# Uploaded files (blood sample images)
+backend/uploads/
+uploads/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# AI training dataset (thousands of images — keep out of repo)
+ai-model/dataset/
+ai-service/dataset/
+
+# AI model large files (optional — already in repo)
+# ai-service/blood_infection_model.h5
+
+# Package lock (keep package-lock.json but ignore yarn.lock if not used)
+yarn.lock

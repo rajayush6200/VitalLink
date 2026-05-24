@@ -1,0 +1,719 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Donate Blood | VitalLink</title>
+<style>
+:root {
+  --primary-red: #e11d48;
+  --primary-red-dark: #b91c1c;
+  --accent-blue: #4f46e5;
+  --glass-bg: rgba(15,23,42,0.55);
+  --card-bg: rgba(15,23,42,0.9);
+  --inner-card: rgba(248,250,252,0.98);
+  --glass-border: rgba(148,163,184,0.35);
+  --shadow: 0 18px 45px rgba(15,23,42,0.65);
+  --shadow-soft: 0 10px 30px rgba(15,23,42,0.4);
+  --gradient-bg: radial-gradient(circle at 0% 0%, #f97316 0%, transparent 45%),
+                  radial-gradient(circle at 100% 0%, #22c55e 0%, transparent 40%),
+                  radial-gradient(circle at 0% 100%, #38bdf8 0%, transparent 40%),
+                  linear-gradient(135deg, #312e81 0%, #7c3aed 45%, #be123c 100%);
+  --text-dark: #020617;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--gradient-bg);
+  min-height:100vh;
+  padding-top:80px;
+  position:relative;
+  overflow-x:hidden;
+  color:#e5e7eb;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:url("assets/log.jpg") center/cover no-repeat fixed;
+  opacity:0.10;
+  mix-blend-mode:soft-light;
+  z-index:-2;
+}
+
+/* NAVBAR with same color + hover as about.html */
+.navbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:80px;
+  padding:1rem 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(15,23,42,0.75);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--glass-border);
+  box-shadow:var(--shadow-soft);
+  z-index:1000;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+}
+
+.logo img{
+  width:50px;height:50px;
+  filter:drop-shadow(0 5px 15px rgba(248,113,113,0.7));
+  animation:pulse 2.2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+
+.logo span{
+  font-size:1.4rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#fee2e2,#fecaca,#f97373);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  white-space:nowrap;
+}
+
+/* nav links with glow hover + active gradient */
+nav ul{
+  display:flex;
+  list-style:none;
+  gap:0.5rem;
+  flex:1;
+  justify-content:center;
+  max-width:70%;
+}
+
+nav ul li{flex-shrink:0;}
+
+nav ul li a{
+  position:relative;
+  display:block;
+  padding:0.7rem 1.2rem;
+  border-radius:999px;
+  font-size:0.9rem;
+  font-weight:600;
+  color:#e5e7eb;
+  text-decoration:none;
+  transition:transform .18s ease, box-shadow .18s ease,
+             background .2s ease, color .2s ease;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+/* soft glow background on hover */
+nav ul li a::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 0 0,rgba(248,113,113,.4),transparent 55%);
+  transform:translateX(-120%);
+  transition:transform .4s ease;
+  opacity:.9;
+}
+
+/* underline */
+nav ul li a::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:6px;
+  width:0;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#fb7185,#f97316);
+  transition:width .25s ease,left .25s ease;
+}
+
+nav ul li a:hover::before{
+  transform:translateX(0);
+}
+
+nav ul li a:hover{
+  color:#fef2f2;
+  box-shadow:0 10px 25px rgba(15,23,42,0.6);
+  transform:translateY(-2px);
+}
+
+nav ul li a:hover::after{
+  width:60%;
+  left:20%;
+}
+
+/* active */
+nav ul li a.active{
+  background:linear-gradient(135deg,#f97373,#ef4444);
+  color:#fef2f2;
+  box-shadow:0 12px 30px rgba(248,113,113,0.7);
+}
+
+nav ul li a.active::before{opacity:0;}
+
+/* PAGE TITLE */
+.page-title{
+  max-width:1100px;
+  margin:2.4rem auto 1.5rem;
+  padding:0 2rem;
+  text-align:center;
+}
+
+.page-title h1{
+  font-size:2.6rem;
+  font-weight:800;
+  color:#fee2e2;
+}
+
+.page-subtitle{
+  margin-top:0.6rem;
+  font-size:1.05rem;
+  opacity:0.9;
+}
+
+/* LAYOUT */
+.container{
+  max-width:1100px;
+  margin:0 auto 3.2rem;
+  padding:0 2rem;
+  display:grid;
+  grid-template-columns:1.3fr 0.9fr;
+  gap:2.5rem;
+}
+
+/* CARDS matching about.html glass style */
+.card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(22px);
+  border-radius:26px;
+  border:1px solid var(--glass-border);
+  padding:2.4rem 2.1rem;
+  box-shadow:var(--shadow);
+}
+
+.card h2{
+  font-size:1.6rem;
+  font-weight:800;
+  margin-bottom:1rem;
+  color:#f9fafb;
+}
+
+.card p{
+  margin:0.8rem 0;
+  font-size:0.98rem;
+  color:#e5e7eb;
+  line-height:1.7;
+}
+
+.card ul{
+  margin:1.1rem 0 0;
+  padding-left:1.4rem;
+}
+
+.card li{
+  margin:0.6rem 0;
+  font-size:0.98rem;
+  color:#e5e7eb;
+}
+
+/* BLOOD TYPE GRID styled like mission cards */
+.blood-type-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1rem;
+  margin-top:1.5rem;
+}
+
+.type-box{
+  position:relative;
+  background:rgba(15,23,42,0.85);
+  border-radius:20px;
+  padding:1rem 0.75rem;
+  text-align:center;
+  border:1px solid var(--glass-border);
+  box-shadow:0 12px 28px rgba(15,23,42,0.75);
+  overflow:hidden;
+  transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+/* subtle border glow like mission cards */
+.type-box::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:22px;
+  background:conic-gradient(from 130deg,#fb7185,#facc15,#22c55e,#38bdf8,#fb7185);
+  opacity:0;
+  transition:opacity .32s ease;
+  z-index:-1;
+}
+
+.type-box-inner{
+  background:var(--inner-card);
+  border-radius:16px;
+  padding:0.9rem 0.5rem;
+  height:100%;
+}
+
+.type-box strong{
+  display:block;
+  font-size:1.4rem;
+  color:var(--primary-red-dark);
+}
+
+.type-box small{
+  font-size:0.78rem;
+  color:var(--text-dark);
+}
+
+/* hover: lift + color shift */
+.type-box:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(15,23,42,0.9);
+}
+
+.type-box:hover::before{
+  opacity:0.9;
+}
+
+/* RIGHT‑SIDE IMAGE PANEL */
+.blood-bag{
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+
+.bag-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+}
+
+.bag-title{
+  font-size:1.3rem;
+  font-weight:800;
+  color:#f9fafb;
+}
+
+.bag-label{
+  background:rgba(254,242,242,0.9);
+  color:var(--primary-red-dark);
+  border-radius:999px;
+  padding:0.5rem 1.1rem;
+  font-size:0.82rem;
+  font-weight:700;
+}
+
+.bag-visual img{
+  width:100%;
+  border-radius:22px;
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.bag-visual img:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 22px 50px rgba(15,23,42,0.9);
+}
+
+/* FOOTER */
+footer{
+  margin-top:3rem;
+  border-top:1px solid var(--glass-border);
+  background:rgba(15,23,42,0.85);
+  backdrop-filter:blur(18px);
+}
+
+.footer-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:1.4rem 2rem;
+  text-align:center;
+  font-size:0.9rem;
+  color:#e5e7eb;
+}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .container{
+    grid-template-columns:1fr;
+    gap:2rem;
+  }
+}
+
+@media(max-width:768px){
+  .navbar{
+    flex-direction:column;
+    gap:1rem;
+    padding:1rem 2rem;
+    height:auto;
+  }
+  nav ul{
+    flex-wrap:wrap;
+    max-width:none;
+    justify-content:center;
+    gap:0.3rem;
+  }
+  nav ul li a{
+    padding:0.6rem 0.9rem;
+    font-size:0.9rem;
+  }
+  .container{padding:0 1.3rem;}
+  .page-title{padding:0 1.3rem;}
+}
+
+
+/* Floating Button */
+.faq-trigger-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+    z-index: 999;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.faq-trigger-btn:hover {
+    transform: scale(1.05) translateY(-5px);
+    background: var(--red-dark);
+}
+
+/* Modal Background Overlay */
+.faq-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Modal Box */
+.faq-content {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    max-width: 600px;
+    width: 100%;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    color: white;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
+}
+
+.close-faq {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Styling the Expandable Questions */
+details {
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+details:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+summary {
+    font-weight: 600;
+    outline: none;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+summary::after {
+    content: "▼";
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+details p {
+    margin-top: 10px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+}
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}
+
+.faq-trigger-btn {
+    animation: pulse-red 2s infinite;
+}
+
+#faqSearch:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 10px rgba(225, 29, 72, 0.3);
+    transition: all 0.3s ease;
+}
+
+#faqSearch::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">
+    <img src="assets/blood-drop.png" alt="Logo">
+    <span>VitalLink</span>
+   
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="why-donate.html" class="active">Why Donate Blood</a></li>
+      <li><a href="donate.html">Become A Donor</a></li>
+      <li><a href="need-blood.html">Need Blood</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-title">
+  <h1>Why donate blood</h1>
+  <p class="page-subtitle">Blood is a precious gift. Your donation can save many lives and bring hope to families in crisis.</p>
+</section>
+
+<main class="container">
+  <section class="card">
+    <h2>Why should I donate blood?</h2>
+    <p>Blood is a precious gift that can save lives. When you donate, your blood is separated into red cells, platelets, and plasma so each part can help a different patient.</p>
+    <p>Blood transfusion is needed for:</p>
+    <ul>
+      <li>Women with complications of pregnancy and childbirth.</li>
+      <li>Children with severe anemia resulting from malaria or malnutrition.</li>
+      <li>People with severe trauma from accidents or disasters.</li>
+      <li>Patients undergoing surgeries, cancer treatment, or organ transplants.</li>
+    </ul>
+
+    <h2 style="margin-top:1.8rem;">Blood Group Highlights</h2>
+    <p>Each blood type plays a unique role in saving lives:</p>
+
+    <div class="blood-type-grid">
+      <div class="type-box">
+        <div class="type-box-inner">
+          <strong>O−</strong>
+          <small>Universal donor for all groups in emergencies.</small>
+        </div>
+      </div>
+      <div class="type-box">
+        <div class="type-box-inner">
+          <strong>AB+</strong>
+          <small>Universal receiver, crucial for plasma therapy.</small>
+        </div>
+      </div>
+      <div class="type-box">
+        <div class="type-box-inner">
+          <strong>A+</strong>
+          <small>One of the most common and always in demand.</small>
+        </div>
+      </div>
+      <div class="type-box">
+        <div class="type-box-inner">
+          <strong>B+</strong>
+          <small>High‑demand group across many regions.</small>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:1.4rem;">People with conditions like thalassemia, sickle cell disease, and bleeding disorders often depend on regular transfusions. Your consistent donations keep the blood supply reliable and safe.</p>
+  </section>
+
+  <aside class="card blood-bag">
+    <div class="bag-header">
+      <h2 class="bag-title">What is donated blood used for?</h2>
+      <div class="bag-label">Blood Bag</div>
+    </div>
+    <div class="bag-visual">
+      <img src="assets/dona.png" alt="Infographic: Usage of donated blood">
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="footer-inner">&copy; 2025 VitalLink. All rights reserved.</div>
+</footer>
+
+<button id="faqBtn" class="faq-trigger-btn">
+    <span>❓ Common Questions</span>
+</button>
+
+<div id="faqModal" class="faq-modal">
+    <div class="faq-content">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <button class="close-faq" onclick="closeFAQ()">&times;</button>
+        </div>
+
+        <div class="faq-search-container" style="margin-bottom: 20px;">
+            <input type="text" id="faqSearch" placeholder="Search topics (e.g., 'tattoo', 'age', 'weight')..." 
+                   onkeyup="filterFAQs()" 
+                   style="width: 100%; padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; outline: none;">
+        </div>
+        
+        <div class="faq-body" id="faqList">
+            <details class="faq-item-box">
+                <summary>Can I donate if I just had a cold or flu? 🤒</summary>
+                <p>You should be completely symptom-free for at least 48 hours before donating. If you are taking antibiotics for an infection, you must finish the full course before you are eligible.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Does having high blood pressure disqualify me? 💓</summary>
+                <p>Not necessarily. As long as your blood pressure is below 180/100 at the time of donation, you can usually donate, even if you are on blood pressure medication.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Is there an upper age limit for donors? 👴</summary>
+                <p>Generally, you can donate up to age 65 or 70 depending on your local health guidelines and overall physical fitness.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>I recently traveled abroad. Can I still donate? ✈️</summary>
+                <p>It depends on where you went. Travel to areas with high malaria or Zika virus risk may require a waiting period of 1 to 12 months.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Can I donate blood if I am a smoker? 🚬</summary>
+                <p>Yes, smoking does not disqualify you. However, we recommend not smoking for at least 2 hours before and after donation.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Can I donate if I have a piercing? 👂</summary>
+                <p>If the piercing was done with a single-use needle in a regulated shop, you might be eligible immediately. Otherwise, a 6-month wait is standard.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Can I exercise after donating? 🏋️</summary>
+                <p>It is best to avoid heavy lifting or vigorous exercise for the rest of the day. Give your body time to replenish fluids.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>What should I do if I feel dizzy afterward? 😵‍💫</summary>
+                <p>Lie down with your feet elevated and drink plenty of water. Most dizziness passes quickly after a snack and a 15-minute rest.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>What is the 'Window Period'? 🪟</summary>
+                <p>This is the time it takes for an infection to show up in blood tests. We ask eligibility questions to ensure the highest safety.</p>
+            </details>
+
+            <details class="faq-item-box">
+                <summary>Why is O-Negative blood so special? 🌟</summary>
+                <p>O-Negative is the universal blood type. It can be given to patients of any blood type in emergency situations.</p>
+            </details>
+        </div>
+
+        <p id="noResults" style="display:none; text-align:center; color: rgba(255,255,255,0.5); margin-top: 20px;">
+            No matching questions found.
+        </p>
+    </div>
+</div>
+
+<script>
+const faqModal = document.getElementById('faqModal');
+const faqBtn = document.getElementById('faqBtn');
+
+// Open Modal
+faqBtn.onclick = () => {
+    faqModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Professional touch: stop background scrolling
+    document.getElementById('faqSearch').focus(); // Focus search immediately
+};
+
+// Close Modal Function
+function closeFAQ() {
+    faqModal.style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+}
+
+// Close if clicking outside the box
+window.onclick = (event) => {
+    if (event.target == faqModal) {
+        closeFAQ();
+    }
+};
+
+function filterFAQs() {
+    const input = document.getElementById('faqSearch');
+    const filter = input.value.toLowerCase();
+    const faqList = document.getElementById('faqList');
+    const items = faqList.getElementsByClassName('faq-item-box');
+    const noResults = document.getElementById('noResults');
+    let hasMatches = false;
+
+    for (let i = 0; i < items.length; i++) {
+        const questionText = items[i].getElementsByTagName('summary')[0].innerText.toLowerCase();
+        const answerText = items[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+
+        if (questionText.includes(filter) || answerText.includes(filter)) {
+            items[i].style.display = ""; 
+            hasMatches = true;
+            
+            // Auto-open the details if user is typing a specific search
+            if(filter.length > 2) {
+                items[i].open = true;
+            } else {
+                items[i].open = false;
+            }
+        } else {
+            items[i].style.display = "none"; 
+        }
+    }
+    noResults.style.display = hasMatches ? "none" : "block";
+}
+</script>
+</body>
+
+</html>

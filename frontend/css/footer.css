@@ -1,5 +1,5 @@
 /* =========================
-   SITE FOOTER — Light theme
+   SITE FOOTER — Glassmorphism (matches VitalLink UI)
 ========================= */
 body {
   min-height: 100vh;
@@ -10,52 +10,46 @@ body {
 .site-footer {
   width: 100%;
   margin-top: auto;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #64748b;
-}
-
-.site-footer__divider {
-  margin: 0;
-  border: none;
-  border-top: 1px solid #e2e8f0;
-  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .site-footer__inner {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 2.75rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 0;
+  gap: 1rem;
 }
 
+/* Social Icons */
 .site-footer__social {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
-  margin-bottom: 1.35rem;
+  gap: 0.75rem;
 }
 
 .site-footer__social a.social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: #ffffff;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   text-decoration: none;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(10px);
   transition:
     color 0.25s ease,
     background 0.25s ease,
@@ -65,10 +59,10 @@ body {
 }
 
 .site-footer__social a.social-icon:hover {
-  color: #dc2626;
-  background: #fff5f5;
-  border-color: #fecaca;
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.12);
+  color: #fff;
+  background: rgba(220, 38, 38, 0.35);
+  border-color: rgba(220, 38, 38, 0.5);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
   transform: translateY(-3px);
 }
 
@@ -77,56 +71,59 @@ body {
 }
 
 .site-footer__social a.social-icon:focus-visible {
-  outline: 2px solid #dc2626;
+  outline: 2px solid #ff6b6b;
   outline-offset: 3px;
 }
 
+/* Brand / copyright line */
 .site-footer__brand {
-  margin: 0 0 0.85rem;
-  font-size: 0.8125rem;
+  margin: 0;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #334155;
+  color: rgba(255, 255, 255, 0.55);
 }
 
+/* Legal links */
 .site-footer__legal {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem 0.65rem;
-  font-size: 0.875rem;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.85rem;
 }
 
 .site-footer__legal a {
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .site-footer__legal a:hover {
-  color: #dc2626;
+  color: #ff6b6b;
 }
 
 .site-footer__sep {
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.25);
   user-select: none;
+}
+
+/* Divider (hidden — border-top on .site-footer is enough) */
+.site-footer__divider {
+  display: none;
 }
 
 @media (max-width: 480px) {
   .site-footer__inner {
-    padding: 2rem 1.25rem 2.25rem;
-  }
-
-  .site-footer__social {
-    gap: 0.65rem;
-    margin-bottom: 1.15rem;
+    padding: 1.5rem 1.25rem;
+    gap: 0.85rem;
   }
 
   .site-footer__social a.social-icon {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
 
   .site-footer__social a.social-icon svg {
@@ -135,8 +132,6 @@ body {
   }
 
   .site-footer__brand {
-    font-size: 0.75rem;
-    line-height: 1.5;
-    padding: 0 0.5rem;
+    font-size: 0.72rem;
   }
 }

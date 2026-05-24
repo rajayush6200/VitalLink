@@ -50,35 +50,28 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     const imagePath = path.resolve(req.file.path);
 
-    // Paths to your AI model
-    const pythonPath = path.resolve(__dirname, "..", "..", "ai-model", "venv", "Scripts", "python.exe");
-    const scriptPath = path.resolve(__dirname, "..", "..", "ai-model", "predict.py");
+    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:5001/analyze";
+    
+    // Convert absolute path to relative path for the flask app
+    const relativeImagePath = req.file.path.replace(/\\/g, "/");
 
-    execFile(pythonPath, [scriptPath, imagePath], async (error, stdout, stderr) => {
-      if (error) {
-        console.error("❌ AI PROCESS ERROR:", error);
-        return res.status(500).json({
-          error: "AI analysis failed",
-          details: stderr || error.message
-        });
+    try {
+      const fetch = (await import('node-fetch')).default;
+      const aiRes = await fetch(aiServiceUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagePath: relativeImagePath })
+      });
+
+      if (!aiRes.ok) {
+        throw new Error(`AI Service returned ${aiRes.status}`);
       }
 
-      console.log("✅ AI RAW OUTPUT:", stdout);
-
-      // --- CLEANING DATA ---
-      const parts = stdout.trim().split(",");
-      const resultRaw = parts[0] ? parts[0].toLowerCase().trim() : "unknown";
-      const confidence = parts[1] ? Number(parts[1].trim()) : 0;
-
-      // Normalize result strings
-      let finalResult = resultRaw;
-      if (resultRaw === "infection" || resultRaw === "infected") {
-        finalResult = "infected";
-      }
+      const aiData = await aiRes.json();
+      const finalResult = aiData.result;
+      const confidence = aiData.confidence;
 
       // --- CREATE DONOR OBJECT ---
-      // We create the object for BOTH cases now to track stats, 
-      // but the result field differentiates them.
       const donorData = new Donor({
         name: req.body.name,
         email: req.body.email,
@@ -99,8 +92,6 @@ router.post("/", upload.single("image"), async (req, res) => {
           imagePath: req.file.path
         });
       } else {
-        // We save "infected" results to the DB so the Admin Chart works,
-        // but they won't show up in the "Normal Donor" list because of the filter in route #1.
         await donorData.save();
         console.log("🚫 Infection detected. Saved to DB as 'infected' for Admin Stats.");
         
@@ -110,7 +101,13 @@ router.post("/", upload.single("image"), async (req, res) => {
           imagePath: req.file.path
         });
       }
-    });
+    } catch (error) {
+      console.error("❌ AI PROCESS ERROR:", error);
+      return res.status(500).json({
+        error: "AI analysis failed",
+        details: error.message
+      });
+    }
 
   } catch (err) {
     console.error("❌ SERVER ERROR:", err);

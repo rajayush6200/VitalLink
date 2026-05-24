@@ -32,13 +32,9 @@ app.use('/api/announcements', announcementRoutes);
 app.use('/api/analyze', analyzeRoutes);
 
 /* MongoDB */
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/vitallink')
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
 
 const PORT = process.env.PORT || 3000;
 

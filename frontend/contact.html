@@ -367,9 +367,9 @@ footer {
 
   <section class="card">
     <h2>Contact Details</h2>
-    <p><strong>Address:</strong> Delhi</p>
-    <p><strong>Contact Number:</strong> 9956425308</p>
-    <p><strong>Email:</strong> mail@gmail.com</p>
+    <p><strong>Address:</strong> Sitamarhi, Bihar</p>
+    <p><strong>Contact Number:</strong> +91 7859044487</p>
+    <p><strong>Email:</strong> rajayush6200@gmail.com</p>
   </section>
 </main>
 
@@ -384,17 +384,21 @@ document.getElementById("contactForm").addEventListener("submit", async e => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  await fetch(`${API_BASE}/api/messages`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    userId: user ? user.id : null,
-    userName: document.getElementById("name").value,
-    userEmail: document.getElementById("email").value,
-    message: document.getElementById("message").value
-  })
-});
+  const res = await fetch(`${API_BASE}/api/messages`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId: user ? user.id : null,
+      userName: document.getElementById("name").value,
+      userEmail: document.getElementById("email").value,
+      message: document.getElementById("message").value
+    })
+  });
 
+  if (!res.ok) {
+    alert("Failed to send message. Please try again.");
+    return;
+  }
 
   alert("Message sent successfully!");
   e.target.reset();

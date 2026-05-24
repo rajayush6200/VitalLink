@@ -14,33 +14,36 @@ model_path = os.path.join(BASE_DIR, "blood_infection_model.h5")
 
 model = tf.keras.models.load_model(model_path)
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    if "image" not in request.files:
-        return jsonify({"error": "No image uploaded"}), 400
+@app.route("/analyze", methods=["POST"])
+def analyze():
+    data = request.json
+    if not data or "imagePath" not in data:
+        return jsonify({"error": "No imagePath provided"}), 400
 
-    img_file = request.files["image"]
+    image_path = os.path.join(os.path.dirname(BASE_DIR), "backend", data["imagePath"])
+    if not os.path.exists(image_path):
+        return jsonify({"error": "Image file not found"}), 404
 
-    with tempfile.NamedTemporaryFile(delete=False) as tmp:
-        img_file.save(tmp.name)
-        img = image.load_img(tmp.name, target_size=(224, 224))
+    try:
+        img = image.load_img(image_path, target_size=(224, 224))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-    prediction = model.predict(img_array, verbose=0)[0][0]
+        prediction = model.predict(img_array, verbose=0)[0][0]
+        result = "infected" if prediction < 0.5 else "normal"
 
-    result = "infected" if prediction < 0.5 else "normal"
-
-    return jsonify({
-        "result": result,
-        "confidence": float(prediction)
-    })
+        return jsonify({
+            "result": result,
+            "confidence": float(prediction)
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/", methods=["GET"])
 def health():
     return "AI service running"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-app.run(host="0.0.0.0", port=port)
+    
+    app.run(host="0.0.0.0", port=5001)
 

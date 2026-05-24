@@ -1,0 +1,5 @@
+# Render static site rewrites (publish directory must be "frontend")
+/donate              /donate.html              200
+/donate/             /donate.html              200
+/become-a-donor      /donate.html              200
+/become-a-donor/     /donate.html              200

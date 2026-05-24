@@ -29,9 +29,25 @@ Set these on **vitallink-backend** → Environment:
    ```
 3. Redeploy **frontend** if you change `frontend/js/config.js`.
 
-## Frontend (vitallink-x5wz)
+## Frontend (vitallink-app-2jb5)
 
-Static site — ensure `js/config.js` has:
+**Live URL:** https://vitallink-app-2jb5.onrender.com
+
+**Static Site** settings in Render Dashboard:
+
+| Setting | Value |
+|---------|--------|
+| **Root Directory** | `.` (repo root) or leave blank |
+| **Publish Directory** | `frontend` ← **required** |
+| **Build Command** | leave empty or `echo ok` |
+
+If Publish Directory is wrong (e.g. `.` or `backend`), every page including **Become a Donor** shows **Not Found**.
+
+After fixing, these must work:
+- https://vitallink-app-2jb5.onrender.com/
+- https://vitallink-app-2jb5.onrender.com/donate.html
+
+Ensure `frontend/js/config.js` has:
 ```js
 API_BASE_URL: "https://vitallink-backend.onrender.com"
 ```

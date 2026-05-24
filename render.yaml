@@ -1,0 +1,45 @@
+# Render Blueprint — VitalLink
+# In Render Dashboard: New > Blueprint > connect repo, or set each service manually using these values.
+
+services:
+  # ── Frontend (Static Site) ─────────────────────────────────────────────
+  - type: web
+    name: vitallink-app-2jb5
+    runtime: static
+    rootDir: .
+    staticPublishPath: ./frontend
+    buildCommand: echo "Static frontend — no build"
+    routes:
+      - type: rewrite
+        source: /donate
+        destination: /donate.html
+      - type: rewrite
+        source: /become-a-donor
+        destination: /donate.html
+
+  # ── Backend (Node API) ─────────────────────────────────────────────────
+  - type: web
+    name: vitallink-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: AI_SERVICE_URL
+        value: https://vitallink-ai-service.onrender.com/analyze
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+  # ── AI Service (Python / Flask) ────────────────────────────────────────
+  - type: web
+    name: vitallink-ai-service
+    runtime: python
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 1

@@ -55,6 +55,15 @@ app.use('/api/users', userRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/analyze', analyzeRoutes);
 
+/* Serve frontend HTML when backend URL is used (fallback for misconfigured static deploy) */
+const frontendPath = path.join(__dirname, '..', 'frontend');
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  app.get('/donate', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'donate.html'));
+  });
+}
+
 /* MongoDB */
 if (!MONGO_URI) {
   console.error('FATAL: MONGO_URI is not set. Auth and database routes will fail until it is configured.');

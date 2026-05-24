@@ -23,6 +23,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 /* Routes */
+app.get('/', (req, res) => {
+  res.send('VitalLink Backend API is running perfectly!');
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/requests', bloodRequestRoutes);

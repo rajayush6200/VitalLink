@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing import image
+import base64
+from io import BytesIO
 import tempfile
 
 app = Flask(__name__)
@@ -17,15 +19,12 @@ model = tf.keras.models.load_model(model_path)
 @app.route("/analyze", methods=["POST"])
 def analyze():
     data = request.json
-    if not data or "imagePath" not in data:
-        return jsonify({"error": "No imagePath provided"}), 400
-
-    image_path = os.path.join(os.path.dirname(BASE_DIR), "backend", data["imagePath"])
-    if not os.path.exists(image_path):
-        return jsonify({"error": "Image file not found"}), 404
+    if not data or "imageBase64" not in data:
+        return jsonify({"error": "No imageBase64 provided"}), 400
 
     try:
-        img = image.load_img(image_path, target_size=(224, 224))
+        img_data = base64.b64decode(data["imageBase64"])
+        img = image.load_img(BytesIO(img_data), target_size=(224, 224))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0) / 255.0
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -25,11 +26,14 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     /* Call AI Service */
     const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:5001/analyze";
+    
+    const imageBuffer = fs.readFileSync(req.file.path);
+    const base64Image = imageBuffer.toString("base64");
 
     const aiRes = await fetch(aiServiceUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imagePath: relativeImagePath })
+      body: JSON.stringify({ imageBase64: base64Image, imagePath: relativeImagePath })
     });
 
     const aiData = await aiRes.json();

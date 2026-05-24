@@ -419,7 +419,7 @@
 </div>
 
 <script>
-    const API_BASE = "http://localhost:5000";
+    const API_BASE = window.APP_CONFIG.API_BASE_URL;
 
 document.addEventListener("DOMContentLoaded", () => {
     const imageInput = document.getElementById("bloodImage");
@@ -592,6 +592,7 @@ function startFakeProgress() {
 }
 </script>
 
+<script src="js/config.js"></script>
 </body>
 
 </html>

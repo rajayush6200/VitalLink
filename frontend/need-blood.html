@@ -363,7 +363,7 @@ button:active{
 </main>
 
 <script>
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = window.APP_CONFIG.API_BASE_URL;
 
 async function submitRequest(e) {
   e.preventDefault();
@@ -413,6 +413,7 @@ async function submitRequest(e) {
 }
 </script>
 
+<script src="js/config.js"></script>
 </body>
 
 </html>

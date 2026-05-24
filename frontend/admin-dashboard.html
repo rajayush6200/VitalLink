@@ -609,7 +609,7 @@ if (!user || user.role !== "admin") {
 </div>
 
 <script>
-   const API_BASE = "http://localhost:5000";
+   const API_BASE = window.APP_CONFIG.API_BASE_URL;
 // 🌙 FLOATING ANIMATIONS
 function createFloatingElements() {
   const container = document.getElementById('floatingElements');
@@ -1118,6 +1118,7 @@ async function loadInventoryChart() {
 
 loadInventoryChart();
 </script>
+<script src="js/config.js"></script>
 </body>
 
 

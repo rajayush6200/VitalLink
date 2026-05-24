@@ -527,7 +527,7 @@ async function showMyRequests() {
 
   try {
     const res = await fetch(
-  `http://localhost:5000/api/requests/user/${window.user.id}`
+  `${window.APP_CONFIG.API_BASE_URL}/api/requests/user/${window.user.id}`
 );
 
     const data = await res.json();
@@ -593,7 +593,7 @@ function closeMessages() {
 async function loadMyMessages() {
   try {
    const res = await fetch(
-  `http://localhost:5000/api/messages/user/${window.user.id}`
+  `${window.APP_CONFIG.API_BASE_URL}/api/messages/user/${window.user.id}`
 );
 
     const data = await res.json();
@@ -663,6 +663,7 @@ function downloadRequestPDF(request) {
 </script>
 
 
+<script src="js/config.js"></script>
 </body>
 
 </html>

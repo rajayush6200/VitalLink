@@ -549,7 +549,7 @@
   </div>
 
   <script>
-     const BASE_URL = "http://localhost:5000";
+     const BASE_URL = window.APP_CONFIG.API_BASE_URL;
     async function login(e) {
       e.preventDefault();
 
@@ -640,6 +640,7 @@
 
     loadLoginAnnouncements();
   </script>
+<script src="js/config.js"></script>
 </body>
 
 

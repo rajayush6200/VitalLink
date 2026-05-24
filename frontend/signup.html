@@ -294,7 +294,7 @@
 </div>
 
 <script>
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = window.APP_CONFIG.API_BASE_URL;
 document.getElementById("signupForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -343,6 +343,7 @@ document.getElementById("signupForm").addEventListener("submit", async function(
 
 
 
+<script src="js/config.js"></script>
 </body>
 
 </html>

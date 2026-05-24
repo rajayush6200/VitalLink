@@ -12,7 +12,7 @@ import tempfile
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(BASE_DIR, "blood_infection_model.h5")
+model_path = os.path.join(BASE_DIR, "blood_infection_model.keras")
 
 model = tf.keras.models.load_model(model_path)
 

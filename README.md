@@ -63,10 +63,10 @@
 <!-- QUICK LINKS -->
 <p>
   <a href="https://vitallink-app-2jb5.onrender.com"><strong>🌐 Live Demo</strong></a> &nbsp;·&nbsp;
-  <a href="#system-architecture"><strong>📐 Architecture</strong></a> &nbsp;·&nbsp;
-  <a href="#installation--local-setup"><strong>⚙️ Setup Guide</strong></a> &nbsp;·&nbsp;
-  <a href="#api-reference"><strong>📡 API Docs</strong></a> &nbsp;·&nbsp;
-  <a href="#ai-system--blood-analysis-engine"><strong>🤖 AI Engine</strong></a>
+  <a href="#system-architecture"><strong>Architecture</strong></a> &nbsp;·&nbsp;
+  <a href="#installation--local-setup"><strong>Setup Guide</strong></a> &nbsp;·&nbsp;
+  <a href="#api-reference"><strong>API Docs</strong></a> &nbsp;·&nbsp;
+  <a href="#ai-system--blood-analysis-engine"><strong>AI Engine</strong></a>
 </p>
 
 <br/>
@@ -75,28 +75,28 @@
 
 </div>
 
-## 📋 Table of Contents
+## Table of Contents
 
 <details open>
 <summary><strong>Click to expand / collapse</strong></summary>
 
-- [🌍 Project Overview](#project-overview)
-- [✨ Key Features](#key-features)
-- [🛠️ Tech Stack](#tech-stack)
-- [📐 System Architecture](#system-architecture)
-- [📁 Folder Structure](#folder-structure)
-- [📸 Screenshots Gallery](#screenshots-gallery)
-- [🤖 AI System & Blood Analysis Engine](#ai-system--blood-analysis-engine)
-- [📡 API Reference](#api-reference)
-- [🗄️ Database Design](#database-design)
-- [⚙️ Installation & Local Setup](#installation--local-setup)
-- [🔐 Environment Variables](#environment-variables)
-- [🚀 Deployment on Render](#deployment-on-render)
-- [🛡️ Security Architecture](#security-architecture)
-- [📈 Performance & Scalability](#performance--scalability)
-- [🗺️ Roadmap & Future Improvements](#roadmap--future-improvements)
-- [🤝 Contributing](#contributing)
-- [👨‍💻 Developer](#developer)
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [System Architecture](#system-architecture)
+- [Folder Structure](#folder-structure)
+- [Screenshots Gallery](#screenshots-gallery)
+- [AI System & Blood Analysis Engine](#ai-system--blood-analysis-engine)
+- [API Reference](#api-reference)
+- [Database Design](#database-design)
+- [Installation & Local Setup](#installation--local-setup)
+- [Environment Variables](#environment-variables)
+- [Deployment on Render](#deployment-on-render)
+- [Security Architecture](#security-architecture)
+- [Performance & Scalability](#performance--scalability)
+- [Roadmap & Future Improvements](#roadmap--future-improvements)
+- [Contributing](#contributing)
+- [Developer](#developer)
 
 </details>
 
@@ -104,7 +104,7 @@
 
 ---
 
-## 🌍 Project Overview
+## Project Overview
 
 <div align="center">
 
@@ -139,7 +139,7 @@ These three services communicate seamlessly across the cloud, all deployed indep
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 <details open>
 <summary><h3>🔐 Authentication & Security</h3></summary>
@@ -231,7 +231,7 @@ These three services communicate seamlessly across the cloud, all deployed indep
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 <div align="center">
 
@@ -295,7 +295,7 @@ These three services communicate seamlessly across the cloud, all deployed indep
 
 ---
 
-## 📐 System Architecture
+## System Architecture
 
 ### High-Level Architecture
 
@@ -491,7 +491,7 @@ erDiagram
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 VitalLink/
@@ -583,7 +583,7 @@ VitalLink/
 
 ---
 
-## 📸 Screenshots Gallery
+## Screenshots Gallery
 
 <div align="center">
 
@@ -689,7 +689,7 @@ VitalLink/
 
 ---
 
-## 🤖 AI System & Blood Analysis Engine
+## AI System & Blood Analysis Engine
 
 ### Model Architecture
 
@@ -768,7 +768,7 @@ def analyze():
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 <div align="center">
 <strong>Base URL:</strong> <code>https://vitallink-backend.onrender.com</code>
@@ -854,7 +854,7 @@ def analyze():
 
 ---
 
-## 🗄️ Database Design
+## Database Design
 
 **Database:** MongoDB Atlas  
 **ODM:** Mongoose 8.x
@@ -949,7 +949,7 @@ def analyze():
 
 ---
 
-## ⚙️ Installation & Local Setup
+## Installation & Local Setup
 
 ### Prerequisites
 
@@ -1075,7 +1075,7 @@ Visit `http://localhost:3000` (or your served frontend port) and log in with you
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ### Backend — `backend/.env`
 
@@ -1101,7 +1101,7 @@ Visit `http://localhost:3000` (or your served frontend port) and log in with you
 
 ---
 
-## 🚀 Deployment on Render
+## Deployment on Render
 
 VitalLink is fully deployed using **Render's Blueprint** infrastructure-as-code (`render.yaml`). Three independent services are deployed from a single repository.
 
@@ -1158,7 +1158,7 @@ git push origin main
 
 ---
 
-## 🛡️ Security Architecture
+## Security Architecture
 
 | Layer | Implementation | Details |
 |-------|---------------|---------|
@@ -1178,7 +1178,7 @@ git push origin main
 
 ---
 
-## 📈 Performance & Scalability
+## Performance & Scalability
 
 ### Current Architecture Strengths
 
@@ -1209,7 +1209,7 @@ Manual blood stock            →    Real-time IoT blood bank sensors
 
 ---
 
-## 🗺️ Roadmap & Future Improvements
+## Roadmap & Future Improvements
 
 ```
 VITALLINK ROADMAP
@@ -1242,7 +1242,7 @@ VITALLINK ROADMAP
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome and appreciated! VitalLink is built to grow.
 
@@ -1282,7 +1282,7 @@ git push origin feature/amazing-feature
 
 ---
 
-## 👨‍💻 Developer
+## Developer
 
 <div align="center">
 

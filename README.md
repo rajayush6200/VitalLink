@@ -63,10 +63,10 @@
 <!-- QUICK LINKS -->
 <p>
   <a href="https://vitallink-app-2jb5.onrender.com"><strong>🌐 Live Demo</strong></a> &nbsp;·&nbsp;
-  <a href="#-system-architecture"><strong>📐 Architecture</strong></a> &nbsp;·&nbsp;
-  <a href="#-installation--local-setup"><strong>⚙️ Setup Guide</strong></a> &nbsp;·&nbsp;
-  <a href="#-api-reference"><strong>📡 API Docs</strong></a> &nbsp;·&nbsp;
-  <a href="#-ai-system--blood-analysis-engine"><strong>🤖 AI Engine</strong></a>
+  <a href="#system-architecture"><strong>📐 Architecture</strong></a> &nbsp;·&nbsp;
+  <a href="#installation--local-setup"><strong>⚙️ Setup Guide</strong></a> &nbsp;·&nbsp;
+  <a href="#api-reference"><strong>📡 API Docs</strong></a> &nbsp;·&nbsp;
+  <a href="#ai-system--blood-analysis-engine"><strong>🤖 AI Engine</strong></a>
 </p>
 
 <br/>
@@ -80,23 +80,23 @@
 <details open>
 <summary><strong>Click to expand / collapse</strong></summary>
 
-- [🌍 Project Overview](#-project-overview)
-- [✨ Key Features](#-key-features)
-- [🛠️ Tech Stack](#-tech-stack)
-- [📐 System Architecture](#-system-architecture)
-- [📁 Folder Structure](#-folder-structure)
-- [📸 Screenshots Gallery](#-screenshots-gallery)
-- [🤖 AI System & Blood Analysis Engine](#-ai-system--blood-analysis-engine)
-- [📡 API Reference](#-api-reference)
-- [🗄️ Database Design](#-database-design)
-- [⚙️ Installation & Local Setup](#-installation--local-setup)
-- [🔐 Environment Variables](#-environment-variables)
-- [🚀 Deployment on Render](#-deployment-on-render)
-- [🛡️ Security Architecture](#-security-architecture)
-- [📈 Performance & Scalability](#-performance--scalability)
-- [🗺️ Roadmap & Future Improvements](#-roadmap--future-improvements)
-- [🤝 Contributing](#-contributing)
-- [👨‍💻 Developer](#-developer)
+- [🌍 Project Overview](#project-overview)
+- [✨ Key Features](#key-features)
+- [🛠️ Tech Stack](#tech-stack)
+- [📐 System Architecture](#system-architecture)
+- [📁 Folder Structure](#folder-structure)
+- [📸 Screenshots Gallery](#screenshots-gallery)
+- [🤖 AI System & Blood Analysis Engine](#ai-system--blood-analysis-engine)
+- [📡 API Reference](#api-reference)
+- [🗄️ Database Design](#database-design)
+- [⚙️ Installation & Local Setup](#installation--local-setup)
+- [🔐 Environment Variables](#environment-variables)
+- [🚀 Deployment on Render](#deployment-on-render)
+- [🛡️ Security Architecture](#security-architecture)
+- [📈 Performance & Scalability](#performance--scalability)
+- [🗺️ Roadmap & Future Improvements](#roadmap--future-improvements)
+- [🤝 Contributing](#contributing)
+- [👨‍💻 Developer](#developer)
 
 </details>
 

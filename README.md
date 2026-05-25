@@ -301,45 +301,45 @@ These three services communicate seamlessly across the cloud, all deployed indep
 
 ```mermaid
 graph TB
-    subgraph CLIENT["🌐 Client Layer (Static Frontend — Render)"]
-        U[👤 User Browser]
-        A[🔑 Admin Browser]
+    subgraph CLIENT["Client Layer (Static Frontend - Render)"]
+        U["User Browser"]
+        A["Admin Browser"]
     end
 
-    subgraph BACKEND["⚡ Backend API — Node.js / Express (Render)"]
-        API[REST API Server<br/>Port: 3000]
-        AUTH[/api/auth<br/>register · login]
-        DONORS[/api/donors<br/>POST · GET · ai-stats]
-        REQUESTS[/api/requests<br/>CRUD + status]
-        MESSAGES[/api/messages<br/>submit · reply]
-        ANNOUNCE[/api/announcements<br/>CRUD]
-        USERS[/api/users<br/>list · delete]
-        ANALYZE[/api/analyze<br/>standalone scan]
-        AI_CLIENT[aiClient.js<br/>HTTP Bridge]
+    subgraph BACKEND["Backend API - Node.js / Express (Render)"]
+        API["REST API Server - Port: 3000"]
+        AUTH["/api/auth - register | login"]
+        DONORS["/api/donors - POST | GET | ai-stats"]
+        REQUESTS["/api/requests - CRUD + status"]
+        MESSAGES["/api/messages - submit | reply"]
+        ANNOUNCE["/api/announcements - CRUD"]
+        USERS["/api/users - list | delete"]
+        ANALYZE["/api/analyze - standalone scan"]
+        AI_CLIENT["aiClient.js - HTTP Bridge"]
     end
 
-    subgraph AI["🤖 AI Microservice — Python / Flask (Render)"]
-        FLASK[Flask App<br/>Gunicorn WSGI]
-        MODEL[TFLite Interpreter<br/>MobileNetV2]
-        INFER[Binary Classification<br/>normal · infected]
+    subgraph AI["AI Microservice - Python / Flask (Render)"]
+        FLASK["Flask App - Gunicorn WSGI"]
+        MODEL["TFLite Interpreter - MobileNetV2"]
+        INFER["Binary Classification - normal | infected"]
     end
 
-    subgraph DB["🗄️ Database — MongoDB Atlas"]
-        USERS_COL[(users)]
-        DONORS_COL[(donors)]
-        REQUESTS_COL[(bloodrequests)]
-        MESSAGES_COL[(messages)]
-        ANNOUNCE_COL[(announcements)]
+    subgraph DB["Database - MongoDB Atlas"]
+        USERS_COL[("users")]
+        DONORS_COL[("donors")]
+        REQUESTS_COL[("bloodrequests")]
+        MESSAGES_COL[("messages")]
+        ANNOUNCE_COL[("announcements")]
     end
 
-    U -->|HTTPS Fetch| API
-    A -->|HTTPS Fetch| API
+    U -->|"HTTPS Fetch"| API
+    A -->|"HTTPS Fetch"| API
     API --> AUTH & DONORS & REQUESTS & MESSAGES & ANNOUNCE & USERS & ANALYZE
     DONORS --> AI_CLIENT
     ANALYZE --> AI_CLIENT
-    AI_CLIENT -->|POST imageBase64 JSON| FLASK
+    AI_CLIENT -->|"POST imageBase64 JSON"| FLASK
     FLASK --> MODEL --> INFER
-    INFER -->|result + confidence| AI_CLIENT
+    INFER -->|"result + confidence"| AI_CLIENT
     AUTH --> USERS_COL
     DONORS --> DONORS_COL
     REQUESTS --> REQUESTS_COL
@@ -353,22 +353,22 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant U as 👤 User
-    participant F as 🌐 Frontend
-    participant B as ⚡ Backend API
-    participant DB as 🗄️ MongoDB
+    participant U as User
+    participant F as Frontend
+    participant B as Backend API
+    participant DB as MongoDB
 
     U->>F: Enter email + password
     F->>B: POST /api/auth/login
-    B->>DB: findOne({ email })
+    B->>DB: findOne(email)
     DB-->>B: User document
     B->>B: bcrypt.compare(password, hash)
     alt Password Valid
         B-->>F: 200 { id, name, email, role }
-        F->>F: localStorage.setItem("user", data)
-        F-->>U: Redirect to index.html (or admin-dashboard.html)
+        F->>F: localStorage.setItem(user, data)
+        F-->>U: Redirect to index.html or admin-dashboard.html
     else Password Invalid
-        B-->>F: 400 { error: "Invalid credentials" }
+        B-->>F: 400 { error: Invalid credentials }
         F-->>U: Show error message
     end
 ```
@@ -379,30 +379,30 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant U as 👤 Donor
-    participant F as 🌐 Frontend
-    participant B as ⚡ Node.js Backend
-    participant AI as 🤖 Flask AI Service
-    participant DB as 🗄️ MongoDB
+    participant U as Donor
+    participant F as Frontend
+    participant B as Node.js Backend
+    participant AI as Flask AI Service
+    participant DB as MongoDB
 
     U->>F: Upload blood sample image
     F->>F: Start animated progress bar
     F->>B: POST /api/donors (multipart/form-data)
     B->>B: Multer saves image to /uploads
-    B->>B: fs.readFileSync → base64 encode
+    B->>B: fs.readFileSync to base64 encode
     B->>AI: POST /analyze { imageBase64 }
     AI->>AI: Load TFLite interpreter
-    AI->>AI: Preprocess → 224×224 → normalize
+    AI->>AI: Preprocess to 224x224 to normalize
     AI->>AI: interpreter.invoke()
-    AI-->>B: { result: "normal"|"infected", confidence: 0.87 }
+    AI-->>B: { result: normal or infected, confidence: 0.87 }
     alt Normal Blood Sample
-        B->>DB: Save Donor { ai_result: "normal" }
-        B-->>F: 201 { result: "normal", confidence }
-        F-->>U: ✅ Show Donor ID Card + Download option
+        B->>DB: Save Donor { ai_result: normal }
+        B-->>F: 201 { result: normal, confidence }
+        F-->>U: Show Donor ID Card + Download option
     else Infection Detected
-        B->>DB: Save Donor { ai_result: "infected" } (for admin stats)
-        B-->>F: 200 { result: "infected", confidence }
-        F-->>U: ❌ Registration blocked — infection detected
+        B->>DB: Save Donor { ai_result: infected }
+        B-->>F: 200 { result: infected, confidence }
+        F-->>U: Registration blocked, infection detected
     end
 ```
 
@@ -412,11 +412,11 @@ sequenceDiagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Submitted: User fills "Need Blood" form
+    [*] --> Submitted: User fills Need Blood form
     Submitted --> Pending: POST /api/requests
     Pending --> AdminReview: Admin opens dashboard
-    AdminReview --> Approved: Admin clicks "Approve"
-    AdminReview --> Rejected: Admin clicks "Reject" + reason
+    AdminReview --> Approved: Admin clicks Approve
+    AdminReview --> Rejected: Admin clicks Reject + reason
     Approved --> PDFGenerated: User downloads PDF slip
     Rejected --> [*]: User notified with reason
     PDFGenerated --> [*]: Process complete
@@ -483,8 +483,8 @@ erDiagram
         date createdAt
     }
 
-    USERS ||--o{ BLOOD_REQUESTS : "submits"
-    USERS ||--o{ MESSAGES : "sends"
+    USERS ||--o{ BLOOD_REQUESTS : submits
+    USERS ||--o{ MESSAGES : sends
 ```
 
 <br/>

@@ -1323,7 +1323,7 @@ git push origin feature/amazing-feature
 
 <br/><br/>
 
-*© 2024 Ayush Raj — MIT License*
+*© 2026 Ayush Raj — MIT License*
 
 ---
 

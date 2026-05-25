@@ -585,12 +585,6 @@ VitalLink/
 
 ## Screenshots Gallery
 
-<div align="center">
-
-> 📌 **Note:** Replace the placeholders below with actual screenshots after capturing them.
-
-</div>
-
 ---
 
 ### 🏠 Landing & Authentication
@@ -682,8 +676,6 @@ VitalLink/
 | *Full user registry with delete controls* | *Admin reply system for user messages* |
 
 </div>
-
-> 💡 **To add screenshots:** Create a `docs/screenshots/` folder in the repo root and add your PNG files matching the filenames above.
 
 <br/>
 
